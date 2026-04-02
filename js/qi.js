@@ -2,7 +2,7 @@
 // TODO EL JAVASCRIPT ORIGINAL - FUNCIONANDO
 // ============================================
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqQHqhYBj9RjSyWRmjxgA7ToSowq6ouW0Hqk1uMKV63fPuy7WHrQsObTWgf7bqPOylDw/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQ6JnohHFGT8aXOuMW2J-bgwf6KoElKHvv0RNkxGWMRA2XfYP39vEeyb_Kmh-5Ec0Gug/exec"; 
 const TOKEN = "MI_4DTOKEN4D_SECRETA_1896";
 
 let googleToken = "";
