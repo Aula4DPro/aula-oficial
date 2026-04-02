@@ -1,0 +1,9 @@
+.countdown-container { background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%); border-radius: 2rem; }
+.btn-gradient { background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%); transition: transform 0.2s; }
+.btn-gradient:active { transform: scale(0.98); }
+.btn-live-session { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.btn-live-session:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4); filter: brightness(1.1); }
+.dropdown-card { background: white; border: 1px solid #e5e7eb; border-radius: 1.5rem; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+.content-dropdown { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0, 1, 0, 1); }
+.content-dropdown.open { max-height: 2000px; transition: max-height 1s ease-in-out; }
+.rotate-180 { transform: rotate(180deg); }
