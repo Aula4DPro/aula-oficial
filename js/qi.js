@@ -54,7 +54,7 @@ function toggleAccordion(id, arrowId) {
     }
 }
 
-const targetDate = new Date(2026, 3, 6, 0, 0, 0).getTime(); 
+const targetDate = new Date(2026, 9, 12, 0, 0, 0).getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
@@ -382,17 +382,21 @@ function cargarContenidoInterno(datosUsuario) {
 
 function iniciarPollingMeet() {
     if (window.meetPollingInterval) clearInterval(window.meetPollingInterval);
-    window.meetPollingInterval = setInterval(() => {
+
+    const ejecutarConsultaMeet = () => {
         if (!window.alumnoId) return;
         const params = new URLSearchParams();
         params.append('action', 'meet');
         params.append('token', TOKEN);
         params.append('id', window.alumnoId);
+        
         fetch(SCRIPT_URL, { method: 'POST', body: params })
             .then(res => res.json())
             .then(data => {
                 const btnMeet = document.getElementById('btn-meet-en-vivo');
                 const btnAsis = document.getElementById('btn-confirmar-asistencia');
+                if (!btnMeet || !btnAsis) return;
+
                 if (data.showButton) {
                     btnMeet.style.display = 'flex';
                     btnAsis.style.display = 'flex';
@@ -421,7 +425,13 @@ function iniciarPollingMeet() {
                 }
             })
             .catch(err => console.error("Error Polling:", err));
-    }, 60000);
+    };
+
+    // 1. Ejecutar de inmediato al ingresar
+    ejecutarConsultaMeet();
+
+    // 2. Repetir cada 60 segundos
+    window.meetPollingInterval = setInterval(ejecutarConsultaMeet, 60000);
 }
 
 function actualizarBarraVisual(total) {
@@ -472,18 +482,22 @@ async function marcarAsistenciaManual() {
 // LOGIN DEL AULA
 document.getElementById('form-aula')?.addEventListener('submit', function(e) {
     e.preventDefault();
-    const inputs = this.querySelectorAll('input');
+    const form = this; // 👈 SE GUARDA LA REFERENCIA AQUÍ
+    const inputs = form.querySelectorAll('input');
     const idUsuario = inputs[0].value.trim();
     const password = inputs[1].value.trim();
-    const btn = this.querySelector('button[type="submit"]');
+    const btn = form.querySelector('button[type="submit"]');
     const originalText = btn.innerText;
+    
     btn.innerText = "Validando...";
     btn.disabled = true;
+
     const params = new URLSearchParams();
     params.append('action', 'login');
     params.append('token', TOKEN);
     params.append('id', idUsuario);
     params.append('pass', password);
+
     fetch(SCRIPT_URL, { method: 'POST', body: params })
         .then(res => res.json())
         .then(data => {
@@ -491,7 +505,9 @@ document.getElementById('form-aula')?.addEventListener('submit', function(e) {
                 window.alumnoId = idUsuario;
                 window.datosAlumno = data;
                 window.totalAsistencias = data.totalAsistencias || 0;
+                
                 actualizarBarraVisual(window.totalAsistencias);
+
                 if (data.yaMarcoHoy) {
                     const btnAsis = document.getElementById('btn-confirmar-asistencia');
                     if (btnAsis) {
@@ -501,10 +517,21 @@ document.getElementById('form-aula')?.addEventListener('submit', function(e) {
                         btnAsis.classList.add('bg-gray-400');
                     }
                 }
-                this.classList.add('hidden');
+
+                // 1. Mostrar pantalla de inmediato usando la variable guardada 'form'
+                form.classList.add('hidden');
                 document.getElementById('cursos-container').classList.remove('hidden');
-                cargarContenidoInterno(data);
-                iniciarPollingMeet();
+
+                // 2. Restaurar el botón
+                btn.innerText = originalText;
+                btn.disabled = false;
+
+                // 3. Cargar el temario y el Meet en segundo plano de forma segura
+                setTimeout(() => {
+                    cargarContenidoInterno(data);
+                    iniciarPollingMeet();
+                }, 50);
+
             } else {
                 alert("ID o Contraseña incorrectos. Por favor, intenta de nuevo.");
                 btn.innerText = originalText;
@@ -673,3 +700,122 @@ function toggleModulo(contentId, iconId) {
                 actualizarHorariosLocales("-5");
             }
         });
+
+// ============================================
+// SIMULACIÓN CON DATOS FIJOS Y SIN REPETICIÓN DE COMBINACIONES
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Cargar dinámicamente la librería de confeti si no existe
+    if (typeof confetti !== 'function') {
+        const scriptConfetti = document.createElement('script');
+        scriptConfetti.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js';
+        document.head.appendChild(scriptConfetti);
+    }
+
+    const listaNombres = [
+        "Téc. Carlos R.", "Dra. María F.", "Dr. Alejandro M.", 
+        "Dra. Xiomara G.", "Ing. Roberto K.", "Téc. Noris D.", 
+        "Dra. Sofía L.", "Dr. Gabriel T.", "Téc. Valentina T.", 
+        "Téc. Fernando P.", "Dr. Diego H.", "Dra. Camila V."
+    ];
+
+    const listaPaises = [
+        "Perú 🇵🇪", "México 🇲🇽", "Colombia 🇨🇴", "Chile 🇨🇱", 
+        "Ecuador 🇪🇨", "Argentina 🇦🇷", "EEUU 🇺🇸", "Costa Rica 🇨🇷", 
+        "Nicaragua 🇳🇮", "Paraguay 🇵🇾", "Uruguay 🇺🇾", "Bolivia 🇧🇴", "España 🇪🇸"
+    ];
+
+    const listaTurnos = ["Turno Mañana 🌅", "Turno Tarde ☀️", "Turno Noche 🌙"];
+    const cursoUnico = "Especialización CAD CAM";
+
+    // 🔒 PASO 1: ASIGNACIÓN FIJA E INMUTABLE
+    // Se ejecuta 1 sola vez al cargar la página. Sofía siempre tendrá el mismo país y turno asignado.
+    const alumnosConDatosFijos = listaNombres.map((nombre, index) => {
+        return {
+            nombre: nombre,
+            pais: listaPaises[index % listaPaises.length], // Asigna un país único distribuido
+            turno: listaTurnos[index % listaTurnos.length]  // Asigna un turno único distribuido
+        };
+    });
+
+    // Cola de control para evitar repeticiones consecutivas
+    let colaCiclo = [...alumnosConDatosFijos];
+
+    // Crear el contenedor de la notificación si no existe
+    let notificationContainer = document.getElementById('notification-toast');
+    if (!notificationContainer) {
+        notificationContainer = document.createElement('div');
+        notificationContainer.id = 'notification-toast';
+        notificationContainer.className = 'fixed bottom-28 left-4 z-[80] max-w-sm bg-white/95 backdrop-blur-md border border-purple-100 p-4 rounded-2xl shadow-xl transform -translate-x-full opacity-0 scale-120 origin-bottom-left transition-all duration-500 flex items-center gap-4 pointer-events-none';
+        document.body.appendChild(notificationContainer);
+    }
+
+    // Función global para ocultar la notificación
+    function ocultarNotificacion() {
+        if (notificationContainer) {
+            notificationContainer.classList.remove('translate-x-0', 'opacity-100');
+            notificationContainer.classList.add('-translate-x-full', 'opacity-0');
+        }
+    }
+
+    // Ocultar si el usuario abre alguna modal de la web
+    document.querySelectorAll('[onclick*="openModal"]').forEach(btn => {
+        btn.addEventListener('click', ocultarNotificacion);
+    });
+
+    // Función para disparar el Pica Pica
+    function dispararPicaPica() {
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 30,
+                spread: 55,
+                origin: { x: 0.1, y: 0.8 },
+                colors: ['#a855f7', '#6366f1', '#ec4899', '#eab308']
+            });
+        }
+    }
+
+    function mostrarNuevaMatricula() {
+        // No mostrar si hay modales abiertas o el aula virtual está desplegada
+        if (document.querySelector('.modal.active') || !document.getElementById('cursos-container')?.classList.contains('hidden')) {
+            return;
+        }
+
+        // 🔄 PASO 2: REINICIAR CICLO SOLO CUANDO TODOS HAYA SALIDO UNA VEZ
+        if (colaCiclo.length === 0) {
+            colaCiclo = [...alumnosConDatosFijos];
+        }
+
+        // Extraer un alumno aleatorio de la cola (y eliminarlo temporalmente)
+        const indexAleatorio = Math.floor(Math.random() * colaCiclo.length);
+        const alumnoActivo = colaCiclo.splice(indexAleatorio, 1)[0];
+
+        notificationContainer.innerHTML = `
+            <div class="w-11 h-11 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-black text-base shrink-0">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <div class="text-left">
+                <p class="text-[13px] font-black text-gray-900 leading-tight">${alumnoActivo.nombre} <span class="text-[11px] font-normal text-gray-500">(${alumnoActivo.pais})</span></p>
+                <p class="text-[10px] font-bold text-purple-500 leading-tight mt-0.5">${alumnoActivo.turno}</p>
+                <p class="text-[12px] font-bold text-purple-700 leading-tight mt-0.5">Se inscribió en ${cursoUnico}</p>
+                <span class="text-[10px] text-gray-400 font-medium">Hace unos segundos</span>
+            </div>
+        `;
+
+        notificationContainer.classList.remove('-translate-x-full', 'opacity-0');
+        notificationContainer.classList.add('translate-x-0', 'opacity-100');
+
+        dispararPicaPica();
+
+        // Mantiene la tarjeta 7 segundos visible
+        setTimeout(ocultarNotificacion, 7000);
+    }
+
+    // Primera ejecución a los 3 segundos
+    setTimeout(mostrarNuevaMatricula, 3000);
+
+    // Repetir entre 10 y 18 segundos
+    setInterval(() => {
+        mostrarNuevaMatricula();
+    }, Math.floor(Math.random() * 8000) + 10000);
+});
