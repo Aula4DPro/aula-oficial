@@ -747,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!notificationContainer) {
         notificationContainer = document.createElement('div');
         notificationContainer.id = 'notification-toast';
-        notificationContainer.className = 'fixed bottom-28 left-4 z-[80] max-w-sm bg-white/95 backdrop-blur-md border border-purple-100 p-4 rounded-2xl shadow-xl transform -translate-x-full opacity-0 scale-120 origin-bottom-left transition-all duration-500 flex items-center gap-4 pointer-events-none';
+        notificationContainer.className = 'fixed bottom-28 left-4 right-4 sm:right-auto z-[80] sm:max-w-sm bg-white/95 backdrop-blur-md border border-purple-100 p-4 rounded-2xl shadow-xl transform -translate-x-full opacity-0 scale-125 origin-bottom-left transition-all duration-500 flex items-center gap-4 pointer-events-none';
         document.body.appendChild(notificationContainer);
     }
 
