@@ -27,7 +27,7 @@
             <span class="text-[7px] text-gray-400 font-bold uppercase tracking-wider">"Aprende, Crea y Comparte"</span>
         </div>
     </div>
-    <span class="text-xs sm:text-sm font-extrabold text-[#ec4899] border-2 border-[#ec4899] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Inicio: 12 de octubre</span>
+    <span class="text-xs sm:text-sm font-extrabold text-[#ec4899] border-2 border-[#ec4899] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Inicio: 23 de noviembre</span>
 </header>
 
 <main class="flex-grow p-6 space-y-6">
@@ -147,18 +147,11 @@
                             <button class="w-full flex justify-between p-3 bg-white border border-pink-100 rounded-xl text-[10px] font-bold text-left">
                                 <span>Tarde: 04:00 p.m. - 06:00 p.m.</span> <span class="text-pink-400">Aula B</span>
                             </button>
+                             <button class="w-full flex justify-between p-3 bg-white border border-pink-100 rounded-xl text-[10px] font-bold text-left">
+                                <span>Noche: 06:30 p.m. - 08:30 p.m.</span> <span class="text-pink-400">Aula C</span>
+                            </button>
                             <button class="w-full flex justify-between p-3 bg-white border border-pink-100 rounded-xl text-[10px] font-bold text-left">
                                 <span>Noche: 09:00 p.m. - 11:00 p.m.</span> <span class="text-pink-400">Aula D</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- GRUPO 3 -->
-                    <div>
-                        <p class="text-[10px] font-black text-indigo-900 mb-2 uppercase">Viernes y Sábado (G3)</p>
-                        <div class="space-y-1">
-                            <button class="w-full flex justify-between p-3 bg-white border border-indigo-100 rounded-xl text-[10px] font-bold text-left">
-                                <span>Tarde: 04:00 p.m. - 06:00 p.m.</span> <span class="text-indigo-400">Aula B</span>
                             </button>
                         </div>
                     </div>
@@ -216,8 +209,9 @@
         <form id="form-inscripcion" class="space-y-4 mt-4">
             <input name="nombre" type="text" placeholder="Nombre" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required>
             <input name="apellidos" type="text" placeholder="Apellidos" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required>
-            <input name="correo" type="email" placeholder="Correo electrónico" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required>
+            <input name="correo" type="email" placeholder="Correo electrónico" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500 hidden" required>
             <input name="whatsapp" type="tel" placeholder="WhatsApp (Ej: +51...)" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required>
+            
             
             <div class="mb-4">
                 <div class="relative">
@@ -292,10 +286,8 @@
 
                         <!-- GRUPO 2: MARTES Y MIÉRCOLES -->
                         <option value="Mar y Mié|Tarde|04:00 - 06:00">Martes y Miércoles - Tarde (04:00 p.m. - 06:00 p.m.) - Aula B</option>
+                        <option value="Mar y Mié|Noche |06:30 - 08:30">Martes y Miércoles - Noche (06:30 p.m. - 08:30 p.m.) - Aula C</option>
                         <option value="Mar y Mié|Noche |09:00 - 11:00">Martes y Miércoles - Noche (09:00 p.m. - 11:00 p.m.) - Aula D</option>
-
-                        <!-- GRUPO 3: VIERNES Y SÁBADO -->
-                        <option value="Vie y Sáb|Tarde|04:00 - 06:00">Viernes y Sábado - Tarde (04:00 p.m. - 06:00 p.m.) - Aula B</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
                         <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
