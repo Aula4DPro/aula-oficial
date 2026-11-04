@@ -28,6 +28,7 @@ function handleGoogleSignIn(response) {
             correoInput.value = email;
             correoInput.readOnly = true;
             correoInput.classList.add('bg-gray-100');
+            correoInput.classList.remove('hidden');
         }
         
         let tokenField = document.getElementById('google_token');
@@ -54,7 +55,7 @@ function toggleAccordion(id, arrowId) {
     }
 }
 
-const targetDate = new Date(2026, 9, 12, 0, 0, 0).getTime();
+const targetDate = new Date(2026, 10, 23, 0, 0, 0).getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
