@@ -1,83 +1,7 @@
-// ============================================
-// TODO EL JAVASCRIPT ORIGINAL - FUNCIONANDO
-// ============================================
-
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQ6JnohHFGT8aXOuMW2J-bgwf6KoElKHvv0RNkxGWMRA2XfYP39vEeyb_Kmh-5Ec0Gug/exec"; 
+// 4D CAD CAM - Funciones del aula virtual
+// Se conserva el protocolo de comunicación del proyecto original.
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQ6JnohHFGT8aXOuMW2J-bgwf6KoElKHvv0RNkxGWMRA2XfYP39vEeyb_Kmh-5Ec0Gug/exec";
 const TOKEN = "MI_4DTOKEN4D_SECRETA_1896";
-
-let googleToken = "";
-
-function handleGoogleSignIn(response) {
-    const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const email = payload.email;
-    const given_name = payload.given_name;
-    const family_name = payload.family_name;
-    
-    googleToken = response.credential;
-    console.log("Google Sign-In exitoso:", email);
-    
-    const form = document.getElementById('form-inscripcion');
-    if (form) {
-        const nombreInput = form.querySelector('input[name="nombre"]');
-        const apellidosInput = form.querySelector('input[name="apellidos"]');
-        const correoInput = form.querySelector('input[name="correo"]');
-        
-        if (nombreInput && given_name) nombreInput.value = given_name;
-        if (apellidosInput && family_name) apellidosInput.value = family_name;
-        if (correoInput) {
-            correoInput.value = email;
-            correoInput.readOnly = true;
-            correoInput.classList.add('bg-gray-100');
-            correoInput.classList.remove('hidden');
-        }
-        
-        let tokenField = document.getElementById('google_token');
-        if (!tokenField) {
-            tokenField = document.createElement('input');
-            tokenField.type = 'hidden';
-            tokenField.name = 'google_token';
-            tokenField.id = 'google_token';
-            form.appendChild(tokenField);
-        }
-        tokenField.value = response.credential;
-        
-        const submitBtn = document.getElementById('submitBtn');
-        if (submitBtn) submitBtn.disabled = false;
-    }
-}
-
-function toggleAccordion(id, arrowId) {
-    const content = document.getElementById(id);
-    const arrow = document.getElementById(arrowId);
-    if (content && arrow) {
-        content.classList.toggle('open');
-        arrow.classList.toggle('rotate-180');
-    }
-}
-
-const targetDate = new Date(2026, 10, 23, 0, 0, 0).getTime();
-
-function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-    if (distance < 0) {
-        document.getElementById("days") && (document.getElementById("days").innerText = "00");
-        document.getElementById("hours") && (document.getElementById("hours").innerText = "00");
-        document.getElementById("minutes") && (document.getElementById("minutes").innerText = "00");
-        document.getElementById("seconds") && (document.getElementById("seconds").innerText = "00");
-        return;
-    }
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("days") && (document.getElementById("days").innerText = days.toString().padStart(2, '0'));
-    document.getElementById("hours") && (document.getElementById("hours").innerText = hours.toString().padStart(2, '0'));
-    document.getElementById("minutes") && (document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0'));
-    document.getElementById("seconds") && (document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0'));
-}
-setInterval(updateCountdown, 1000);
-updateCountdown();
 
 const dataTemarios = {
     'mod-basico': { title: 'Exocad Básico', lessons: [
@@ -178,124 +102,6 @@ const dataTemarios = {
     ] }
 };
 
-function openModal(id) {
-    const modal = document.getElementById('modal-container');
-    const list = document.getElementById('modal-list');
-    const titleElement = document.getElementById('modal-title');
-    const data = dataTemarios[id] || { title: 'Próximamente', lessons: [] };
-    const isFriki = id === 'mod-friki';
-    titleElement.innerHTML = isFriki ? `<span class="text-purple-600">☢</span> ${data.title} <span class="text-[10px] bg-black text-white px-2 py-0.5 rounded ml-2 italic">MASTER</span>` : data.title;
-    list.innerHTML = data.lessons.map(l => {
-        if (isFriki) {
-            return `<div class="flex items-center justify-between p-4 rounded-xl bg-slate-900 border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.15)] mb-2"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center border border-purple-500/40"><i class="fas fa-microchip text-purple-400 text-[10px]"></i></div><div class="flex flex-col"><span class="text-[11px] font-black uppercase italic text-white tracking-tight">${l.t}</span><span class="text-[8px] font-bold uppercase text-purple-400 tracking-widest">⚡ Configuración Experta</span></div></div><i class="fas fa-terminal text-purple-500/40 text-[10px]"></i></div>`;
-        }
-        const tieneAcceso = l.active;
-        const tag = tieneAcceso ? 'a' : 'div';
-        const href = tieneAcceso ? `href="${l.link}" target="_blank"` : '';
-        const bgClass = tieneAcceso ? 'bg-purple-50 border border-purple-200' : 'bg-gray-50 border border-gray-100';
-        const textClass = tieneAcceso ? 'text-purple-700' : 'text-gray-700';
-        const customStyle = l.color ? `style="color: ${l.color} !important;"` : '';
-        return `<${tag} ${href} class="flex items-center justify-between p-4 rounded-xl mb-2 ${bgClass}"><div class="flex flex-col"><span class="text-[11px] font-black ${textClass}" ${customStyle}>${l.t}</span>${tieneAcceso ? '<span class="text-[8px] text-purple-400 font-bold uppercase">Aula disponible</span>' : ''}</div><i class="fas ${tieneAcceso ? 'fa-external-link-alt text-purple-500' : 'fa-lock text-gray-300'} text-[10px]"></i></${tag}>`;
-    }).join('');
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModal() { 
-    document.getElementById('modal-container').classList.remove('active'); 
-    document.body.style.overflow = 'auto';
-}
-
-function openModalInscripcion() { document.getElementById('modal-inscripcion').classList.add('active'); }
-function closeModalInscripcion() { document.getElementById('modal-inscripcion').classList.remove('active'); }
-function openModalAula() { document.getElementById('modal-aula').classList.add('active'); }
-function closeModalAula() { document.getElementById('modal-aula').classList.remove('active'); }
-
-window.onclick = function(event) {
-    const modals = ['modal-container', 'modal-inscripcion', 'modal-aula'];
-    modals.forEach(id => {
-        const m = document.getElementById(id);
-        if (event.target == m) {
-            m.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    });
-}
-
-// LÓGICA DE ENVÍO DE INSCRIPCIÓN (CORREGIDA)
-document.addEventListener("DOMContentLoaded", function() {
-    const formInscripcion = document.getElementById("form-inscripcion");
-    if (formInscripcion) {
-        formInscripcion.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            if (formInscripcion.dataset.enviando === "true") return;
-            formInscripcion.dataset.enviando = "true";
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.innerText;
-            submitBtn.innerText = "Generando ID...";
-            submitBtn.disabled = true;
-            
-            const formData = new FormData(formInscripcion);
-            const datos = {};
-            for (let [key, value] of formData.entries()) { datos[key] = value; }
-            
-            const horarioCompleto = datos.horario_completo;
-            if (horarioCompleto) {
-                const partes = horarioCompleto.split('|');
-                datos.dias = partes[0];
-                datos.turno = partes[1];
-                datos.horario = partes[2];
-            }
-            
-            const googleTokenField = document.getElementById('google_token');
-            if (googleTokenField && googleTokenField.value) {
-                datos.google_token = googleTokenField.value;
-            }
-            
-            const timezoneSelect = document.getElementById('timezone-select');
-            if (timezoneSelect && timezoneSelect.value) {
-                datos.zona_horaria = timezoneSelect.value;
-            }
-            
-            const formDataToSend = new FormData();
-            formDataToSend.append('action', 'inscripcion');
-            formDataToSend.append('token', TOKEN);
-            for (const key in datos) {
-                formDataToSend.append(key, datos[key]);
-            }
-            
-            try {
-                const response = await fetch(SCRIPT_URL, { method: 'POST', body: formDataToSend });
-                const data = await response.json();
-                
-                if (data.success) {
-                    const modalContent = document.getElementById('modal-inscripcion').querySelector('.modal-content');
-                    modalContent.innerHTML = `<div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div><div class="text-center animate-fade-in"><div class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-check text-2xl"></i></div><h4 class="text-xl font-black text-gray-900 uppercase">¡Registro Recibido!</h4><p class="text-[12px] text-gray-500 mt-2">Hola <strong class="text-gray-900">${datos.nombre || ''}</strong>, tus datos han sido registrados.</p><div class="my-6"><p class="text-[10px] font-bold text-gray-400 uppercase mb-2">Tu código único de alumno es:</p><div class="p-3 border-2 border-dashed border-purple-300 rounded-xl bg-purple-50"><span class="text-2xl font-black text-purple-700 tracking-widest">${data.id}</span></div></div><div class="bg-blue-50 p-4 rounded-2xl text-left mb-6 border border-blue-100"><p class="text-[10px] font-black text-blue-600 uppercase mb-2"><i class="fas fa-calendar-alt mr-1"></i> Tu horario seleccionado:</p><p class="text-sm font-bold text-blue-800">${datos.dias || ''} - ${datos.turno || ''} (${datos.horario || ''})</p></div><div class="bg-blue-50 p-4 rounded-2xl text-left mb-6 border border-blue-100"><p class="text-[10px] font-black text-blue-600 uppercase mb-2"><i class="fas fa-info-circle mr-1"></i> Próximos pasos:</p><ul class="text-[11px] text-blue-800 space-y-1 font-medium"><li>1. Realiza el pago de tu matrícula.</li><li>2. Envía el comprobante por WhatsApp.</li><li>3. Recibirás tu contraseña de acceso.</li></ul></div><div class="space-y-3"><button onclick="togglePaymentOptions()" class="block w-full py-4 bg-[#2ECC71] hover:bg-[#27AE60] text-white rounded-2xl font-black text-sm shadow-lg flex items-center justify-center gap-2 transition-all"><i class="fas fa-wallet text-lg"></i><span>REALIZAR TU PAGO AHORA</span><i id="payment-chevron" class="fas fa-chevron-down text-xs transition-transform duration-300"></i></button><div id="payment-options-container" class="hidden space-y-4 pt-4 border-t border-gray-100 animate-fade-in"><div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 text-left"><p class="text-[10px] font-black text-blue-700 uppercase mb-3"><i class="fas fa-university mr-1"></i> Medios de Pago Nacionales</p><div class="space-y-2"><a href="https://wa.me/51993232545?text=ID:${data.id}%20*BCP*%20A%20nombre%20de%20Linder%20Efrain%20Briones%20Paredes%20•%20Cta.%20soles:%201929%206552073044..." target="_blank" class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl hover:border-blue-300 transition"><span class="text-[11px] font-bold text-gray-700">BCP (Soles y Dólares)</span><i class="fas fa-credit-card text-blue-400 text-[12px]"></i></a><a href="https://wa.me/51993232545?text=ID:${data.id}%20*BBVA*%20A%20nombre%20de%20Linder%20Efrain%20Briones%20Paredes%20•%20Cta.%20soles:%200011-0360-0200681531..." target="_blank" class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl hover:border-blue-300 transition"><span class="text-[11px] font-bold text-gray-700">BBVA (Soles y Dólares)</span><i class="fas fa-credit-card text-blue-400 text-[12px]"></i></a><a href="https://wa.me/51993232545?text=ID:${data.id}%20*INTERBANK*%20A%20nombre%20de%20Linder%20Efrain%20Briones%20Paredes%20•%20Cta.%20soles:%20898-3%20411686100..." target="_blank" class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl hover:border-blue-300 transition"><span class="text-[11px] font-bold text-gray-700">Interbank (Soles y Dólares)</span><i class="fas fa-credit-card text-blue-400 text-[12px]"></i></a></div></div><div class="bg-purple-50/50 p-4 rounded-2xl border border-purple-100 text-left"><p class="text-[10px] font-black text-purple-700 uppercase mb-3"><i class="fas fa-globe mr-1"></i> Medios de Pago Internacionales</p><div class="space-y-2"><a href="https://wa.me/51993232545?text=ID:${data.id}%20*PAYPAL*%20link:%20paypal.me/4dcadcam7" target="_blank" class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl hover:border-purple-300 transition"><span class="text-[11px] font-bold text-gray-700">PayPal (Crédito/Débito)</span><i class="fab fa-paypal text-purple-400"></i></a><a href="https://wa.me/51993232545?text=ID:${data.id}%20*WESTERN%20UNION*%20Beneficiario:%20Linder%20Efrain%20Briones%20Paredes" target="_blank" class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl hover:border-purple-300 transition"><span class="text-[11px] font-bold text-gray-700">Western Union / Argenper</span><i class="fas fa-globe text-gray-300 text-[10px]"></i></a></div></div></div></div><button onclick="closeModalInscripcion()" class="w-full mt-4 py-3 text-gray-400 font-bold text-[10px] uppercase">Cerrar Ventana</button></div>`;
-                } else {
-                    alert("Error en el registro: " + (data.error || "intenta de nuevo"));
-                    submitBtn.innerText = originalText;
-                    submitBtn.disabled = false;
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Error de conexión");
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            }
-            delete formInscripcion.dataset.enviando;
-        });
-    }
-});
-
-function togglePaymentOptions() {
-    const container = document.getElementById('payment-options-container');
-    const chevron = document.getElementById('payment-chevron');
-    if(container && chevron) {
-        container.classList.toggle('hidden');
-        chevron.classList.toggle('rotate-180');
-    }
-}
 
 function getCurrentWeekForGroup(startDateString) {
     const start = new Date(startDateString);
@@ -480,71 +286,7 @@ async function marcarAsistenciaManual() {
     }
 }
 
-// LOGIN DEL AULA
-document.getElementById('form-aula')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = this; // 👈 SE GUARDA LA REFERENCIA AQUÍ
-    const inputs = form.querySelectorAll('input');
-    const idUsuario = inputs[0].value.trim();
-    const password = inputs[1].value.trim();
-    const btn = form.querySelector('button[type="submit"]');
-    const originalText = btn.innerText;
-    
-    btn.innerText = "Validando...";
-    btn.disabled = true;
 
-    const params = new URLSearchParams();
-    params.append('action', 'login');
-    params.append('token', TOKEN);
-    params.append('id', idUsuario);
-    params.append('pass', password);
-
-    fetch(SCRIPT_URL, { method: 'POST', body: params })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.access === true) {
-                window.alumnoId = idUsuario;
-                window.datosAlumno = data;
-                window.totalAsistencias = data.totalAsistencias || 0;
-                
-                actualizarBarraVisual(window.totalAsistencias);
-
-                if (data.yaMarcoHoy) {
-                    const btnAsis = document.getElementById('btn-confirmar-asistencia');
-                    if (btnAsis) {
-                        btnAsis.disabled = true;
-                        btnAsis.innerHTML = "<i class='fas fa-check'></i> ASISTENCIA DEL DÍA OK";
-                        btnAsis.classList.remove('bg-green-600');
-                        btnAsis.classList.add('bg-gray-400');
-                    }
-                }
-
-                // 1. Mostrar pantalla de inmediato usando la variable guardada 'form'
-                form.classList.add('hidden');
-                document.getElementById('cursos-container').classList.remove('hidden');
-
-                // 2. Restaurar el botón
-                btn.innerText = originalText;
-                btn.disabled = false;
-
-                // 3. Cargar el temario y el Meet en segundo plano de forma segura
-                setTimeout(() => {
-                    cargarContenidoInterno(data);
-                    iniciarPollingMeet();
-                }, 50);
-
-            } else {
-                alert("ID o Contraseña incorrectos. Por favor, intenta de nuevo.");
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
-        })
-        .catch(err => {
-            console.error("Error Login:", err);
-            btn.innerText = originalText;
-            btn.disabled = false;
-        });
-});
 
 function toggleModulo(contentId, iconId) {
     const content = document.getElementById(contentId);
@@ -558,265 +300,131 @@ function toggleModulo(contentId, iconId) {
     }
 }
 
-            // CONVERSOR DE MONEDA
-            function convertirMoneda() {
-                const select = document.getElementById('currency-select');
-                const customDiv = document.getElementById('custom-rate-container');
-                const customInput = document.getElementById('custom-rate');
-                const displayPrecio = document.getElementById('converted-price');
-                const displayTax = document.getElementById('converted-tax');
-                if (!select || !displayPrecio) return;
-                const val = select.value;
-                let tasa = 0;
-                let simbolo = "";
-                if (val === "custom|0") {
-                    if (customDiv) customDiv.classList.remove('hidden');
-                    tasa = parseFloat(customInput?.value) || 0;
-                    simbolo = "";
-                    if (customInput) customInput.oninput = convertirMoneda;
-                } else {
-                    if (customDiv) customDiv.classList.add('hidden');
-                    if (val) {
-                        tasa = parseFloat(val.split('|')[1]);
-                        const texto = select.options[select.selectedIndex]?.text || "";
-                        if (texto.includes("Perú")) simbolo = "S/";
-                        else if (texto.includes("México")) simbolo = "$";
-                        else if (texto.includes("Colombia")) simbolo = "$";
-                        else if (texto.includes("Chile")) simbolo = "$";
-                        else if (texto.includes("Argentina")) simbolo = "$";
-                        else if (texto.includes("Bolivia")) simbolo = "Bs";
-                        else if (texto.includes("Uruguay")) simbolo = "$";
-                        else if (texto.includes("Paraguay")) simbolo = "₲";
-                        else if (texto.includes("Euro")) simbolo = "€";
-                        else if (texto.includes("EEUU") || texto.includes("Ecuador") || texto.includes("USD")) simbolo = "$";
-                        else if (texto.includes("Costa Rica")) simbolo = "₡";
-                        else if (texto.includes("Nicaragua")) simbolo = "C$";
-                        else if (texto.includes("Honduras")) simbolo = "L";
-                        else if (texto.includes("Guatemala")) simbolo = "Q";
-                        else if (texto.includes("Dominicana")) simbolo = "RD$";
-                        else simbolo = "$";
-                    }
-                }
-                if (tasa > 0) {
-                    const precioBase = 499;
-                    const tasaImpuesto = 0.0553;
-                    const montoConvertido = (precioBase * tasa).toFixed(2);
-                    const impuestoConvertido = (precioBase * tasa * tasaImpuesto).toFixed(2);
-                    displayPrecio.innerHTML = `${simbolo} ${montoConvertido}`;
-                    if (displayTax) displayTax.innerHTML = `${simbolo} ${impuestoConvertido}`;
-                } else {
-                    displayPrecio.innerHTML = "--";
-                    if (displayTax) displayTax.innerHTML = "--";
-                }
-            }
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const currencySelect = document.getElementById('currency-select');
-                if (currencySelect) {
-                    currencySelect.addEventListener('change', convertirMoneda);
-                    const customRate = document.getElementById('custom-rate');
-                    if (customRate) customRate.addEventListener('input', convertirMoneda);
-                    convertirMoneda();
-                }
-            });
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("loginForm");
+  const status = document.getElementById("status");
+  const aula = document.getElementById("cursos-container");
+  const pass = document.getElementById("password");
+  const toggle = document.getElementById("toggle");
+  const user = document.getElementById("userId");
 
-            // ZONA HORARIA
-            function convertirHora(horaPeru, offsetLocal) {
-                let [h, m] = horaPeru.split(':').map(Number);
-                let fecha = new Date();
-                fecha.setUTCHours(h, m, 0, 0);
-                fecha.setUTCHours(fecha.getUTCHours() + 5);
-                fecha.setUTCHours(fecha.getUTCHours() + offsetLocal);
-                let horaLocal = fecha.getUTCHours().toString().padStart(2, '0');
-                let minLocal = fecha.getUTCMinutes().toString().padStart(2, '0');
-                return `${horaLocal}:${minLocal}`;
-            }
+  // 1. AL CARGAR LA PÁGINA: Verificar si hay un usuario recordado
+  const saludoPrevio = document.getElementById("saludo-previo");
+  const usuarioRecordado = document.getElementById("usuario-recordado");
+  const idGuardado = localStorage.getItem("4d_ultimo_id");
 
-            function actualizarHorariosLocales(utcSeleccionado) {
-                const selectorHorario = document.getElementById('horario-select');
-                if (!selectorHorario) return;
-                
-                const opciones = selectorHorario.querySelectorAll('option');
-                const offsetLocal = parseInt(utcSeleccionado); // ej: -6 para Costa Rica
-                
-                // Guardar valores originales la primera vez
-                if (!selectorHorario.dataset.originalValues) {
-                    const originales = [];
-                    opciones.forEach((opt, idx) => {
-                        if (idx > 0 && opt.value) {
-                            const partes = opt.value.split('|');
-                            if (partes.length >= 3) {
-                                originales.push({ 
-                                    dias: partes[0], 
-                                    turno: partes[1], 
-                                    horaPeru: partes[2] 
-                                });
-                            }
-                        }
-                    });
-                    selectorHorario.dataset.originalValues = JSON.stringify(originales);
-                }
-                
-                const originales = JSON.parse(selectorHorario.dataset.originalValues);
-                
-                opciones.forEach((opt, idx) => {
-                    if (idx === 0 || !opt.value) return;
-                    
-                    if (idx - 1 < originales.length) {
-                        const orig = originales[idx - 1];
-                        const [inicioPeru, finPeru] = orig.horaPeru.split(' - ');
-                        
-                        if (inicioPeru && finPeru) {
-                            // Calcular diferencia: hora local = hora Perú + (offsetLocal + 5)
-                            const [hInicio, mInicio] = inicioPeru.split(':').map(Number);
-                            const [hFin, mFin] = finPeru.split(':').map(Number);
-                            
-                            let horaInicioLocal = hInicio + (offsetLocal + 5);
-                            let horaFinLocal = hFin + (offsetLocal + 5);
-                            
-                            // Ajustar si pasa de 24 horas
-                            if (horaInicioLocal >= 24) horaInicioLocal -= 24;
-                            if (horaFinLocal >= 24) horaFinLocal -= 24;
-                            if (horaInicioLocal < 0) horaInicioLocal += 24;
-                            if (horaFinLocal < 0) horaFinLocal += 24;
-                            
-                            const inicioLocal = `${horaInicioLocal.toString().padStart(2, '0')}:${mInicio.toString().padStart(2, '0')}`;
-                            const finLocal = `${horaFinLocal.toString().padStart(2, '0')}:${mFin.toString().padStart(2, '0')}`;
-                            
-                            if (offsetLocal === -5) {
-                                opt.textContent = `${orig.dias} - ${orig.turno} (${orig.horaPeru} Perú)`;
-                            } else {
-                                opt.textContent = `${orig.dias} - ${orig.turno} (${orig.horaPeru} Perú) → (${inicioLocal}-${finLocal} tu zona)`;
-                            }
-                            opt.value = `${orig.dias}|${orig.turno}|${orig.horaPeru}`;
-                        }
-                    }
-                });
-            }
+  if (idGuardado && saludoPrevio && usuarioRecordado) {
+    usuarioRecordado.textContent = idGuardado;
+    saludoPrevio.style.display = "block";
+    if (user) user.value = idGuardado; // Prellena el campo ID para ahorrarle tiempo
+  }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const tzSelect = document.getElementById('timezone-select');
-            if (tzSelect) {
-                tzSelect.addEventListener('change', function() { actualizarHorariosLocales(this.value); });
-                actualizarHorariosLocales("-5");
-            }
-        });
-
-// ============================================
-// SIMULACIÓN CON DATOS FIJOS Y SIN REPETICIÓN DE COMBINACIONES
-// ============================================
-document.addEventListener('DOMContentLoaded', function() {
-    // Cargar dinámicamente la librería de confeti si no existe
-    if (typeof confetti !== 'function') {
-        const scriptConfetti = document.createElement('script');
-        scriptConfetti.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js';
-        document.head.appendChild(scriptConfetti);
-    }
-
-    const listaNombres = [
-        "Téc. Carlos R.", "Dra. María F.", "Dr. Alejandro M.", 
-        "Dra. Xiomara G.", "Ing. Roberto K.", "Téc. Noris D.", 
-        "Dra. Sofía L.", "Dr. Gabriel T.", "Téc. Valentina T.", 
-        "Téc. Fernando P.", "Dr. Diego H.", "Dra. Camila V."
-    ];
-
-    const listaPaises = [
-        "Perú 🇵🇪", "México 🇲🇽", "Colombia 🇨🇴", "Chile 🇨🇱", 
-        "Ecuador 🇪🇨", "Argentina 🇦🇷", "EEUU 🇺🇸", "Costa Rica 🇨🇷", 
-        "Nicaragua 🇳🇮", "Paraguay 🇵🇾", "Uruguay 🇺🇾", "Bolivia 🇧🇴", "España 🇪🇸"
-    ];
-
-    const listaTurnos = ["Turno Mañana 🌅", "Turno Tarde ☀️", "Turno Noche 🌙"];
-    const cursoUnico = "Especialización CAD CAM";
-
-    // 🔒 PASO 1: ASIGNACIÓN FIJA E INMUTABLE
-    // Se ejecuta 1 sola vez al cargar la página. Sofía siempre tendrá el mismo país y turno asignado.
-    const alumnosConDatosFijos = listaNombres.map((nombre, index) => {
-        return {
-            nombre: nombre,
-            pais: listaPaises[index % listaPaises.length], // Asigna un país único distribuido
-            turno: listaTurnos[index % listaTurnos.length]  // Asigna un turno único distribuido
-        };
+  // Botón Mostrar / Ocultar contraseña
+  if (toggle && pass) {
+    toggle.addEventListener("click", () => {
+      const mostrar = pass.type === "password";
+      pass.type = mostrar ? "text" : "password";
+      toggle.textContent = mostrar ? "Ocultar" : "Mostrar";
+      toggle.setAttribute("aria-pressed", String(mostrar));
     });
+  }
 
-    // Cola de control para evitar repeticiones consecutivas
-    let colaCiclo = [...alumnosConDatosFijos];
+  // Envío del formulario de acceso
+  if (form) {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!user.value.trim() || !pass.value) return;
+      const button = form.querySelector('button[type="submit"]');
+      const textoOriginal = button.textContent;
+      button.disabled = true;
+      button.textContent = "Validando...";
+      status.textContent = "Verificando tus datos de acceso...";
+      status.style.color = "var(--link)";
 
-    // Crear el contenedor de la notificación si no existe
-    let notificationContainer = document.getElementById('notification-toast');
-    if (!notificationContainer) {
-        notificationContainer = document.createElement('div');
-        notificationContainer.id = 'notification-toast';
-        notificationContainer.className = 'fixed bottom-28 left-4 right-4 sm:right-auto z-[80] sm:max-w-sm bg-white/95 backdrop-blur-md border border-purple-100 p-4 rounded-2xl shadow-xl transform -translate-x-full opacity-0 scale-125 origin-bottom-left transition-all duration-500 flex items-center gap-4 pointer-events-none';
-        document.body.appendChild(notificationContainer);
-    }
+      const params = new URLSearchParams();
+      params.append("action", "login");
+      params.append("token", TOKEN);
+      params.append("id", user.value.trim());
+      params.append("pass", pass.value);
 
-    // Función global para ocultar la notificación
-    function ocultarNotificacion() {
-        if (notificationContainer) {
-            notificationContainer.classList.remove('translate-x-0', 'opacity-100');
-            notificationContainer.classList.add('-translate-x-full', 'opacity-0');
+      try {
+        const response = await fetch(SCRIPT_URL, { method: "POST", body: params });
+        if (!response.ok) throw new Error("El servidor respondió con un error HTTP " + response.status);
+        const data = await response.json();
+
+        if (data.success && data.access === true) {
+          const idIngresado = user.value.trim();
+
+          // 2. AL INICIAR SESIÓN: Guardar el ID en la memoria del navegador
+          localStorage.setItem("4d_ultimo_id", idIngresado);
+          if (usuarioRecordado && saludoPrevio) {
+            usuarioRecordado.textContent = idIngresado;
+            saludoPrevio.style.display = "block";
+          }
+
+          window.alumnoId = idIngresado;
+          window.datosAlumno = data;
+          window.totalAsistencias = data.totalAsistencias || 0;
+          actualizarBarraVisual(window.totalAsistencias);
+
+          if (data.yaMarcoHoy) {
+            const asistencia = document.getElementById("btn-confirmar-asistencia");
+            if (asistencia) {
+              asistencia.disabled = true;
+              asistencia.innerHTML = '<i class="fas fa-check"></i> ASISTENCIA DEL DÍA OK';
+              asistencia.classList.remove("bg-green-600");
+              asistencia.classList.add("bg-gray-400");
+            }
+          }
+
+          const saludo = document.getElementById("saludo-usuario");
+          if (saludo) saludo.textContent = "Bienvenido/a " + (data.nombre || "");
+          form.style.display = "none";
+          document.querySelector(".new").style.display = "none";
+          document.querySelector(".foot").style.display = "none";
+          aula.classList.remove("hidden");
+          document.body.style.overflow = "hidden";
+          status.textContent = "";
+          cargarContenidoInterno(data);
+          iniciarPollingMeet();
+        } else {
+          status.textContent = data.error || "ID de usuario o contraseña incorrectos.";
+          status.style.color = "#B42318";
         }
-    }
-
-    // Ocultar si el usuario abre alguna modal de la web
-    document.querySelectorAll('[onclick*="openModal"]').forEach(btn => {
-        btn.addEventListener('click', ocultarNotificacion);
+      } catch (error) {
+        console.error("Error al iniciar sesión:", error);
+        status.textContent = "No se pudo conectar con el servidor. Inténtalo nuevamente.";
+        status.style.color = "#B42318";
+      } finally {
+        button.disabled = false;
+        button.textContent = textoOriginal;
+      }
     });
+  }
 
-    // Función para disparar el Pica Pica
-    function dispararPicaPica() {
-        if (typeof confetti === 'function') {
-            confetti({
-                particleCount: 30,
-                spread: 55,
-                origin: { x: 0.1, y: 0.8 },
-                colors: ['#a855f7', '#6366f1', '#ec4899', '#eab308']
-            });
-        }
-    }
+  // Botón Cerrar sesión
+  const logout = document.getElementById("logoutAula");
+  if (logout) {
+    logout.addEventListener("click", () => {
+      if (window.meetPollingInterval) clearInterval(window.meetPollingInterval);
+      window.alumnoId = null;
+      window.datosAlumno = null;
+      aula.classList.add("hidden");
+      document.body.style.overflow = "";
+      form.reset();
 
-    function mostrarNuevaMatricula() {
-        // No mostrar si hay modales abiertas o el aula virtual está desplegada
-        if (document.querySelector('.modal.active') || !document.getElementById('cursos-container')?.classList.contains('hidden')) {
-            return;
-        }
+      // Mantener el ID recordado en el input tras cerrar sesión
+      const ultimoId = localStorage.getItem("4d_ultimo_id");
+      if (ultimoId && user) user.value = ultimoId;
 
-        // 🔄 PASO 2: REINICIAR CICLO SOLO CUANDO TODOS HAYA SALIDO UNA VEZ
-        if (colaCiclo.length === 0) {
-            colaCiclo = [...alumnosConDatosFijos];
-        }
-
-        // Extraer un alumno aleatorio de la cola (y eliminarlo temporalmente)
-        const indexAleatorio = Math.floor(Math.random() * colaCiclo.length);
-        const alumnoActivo = colaCiclo.splice(indexAleatorio, 1)[0];
-
-        notificationContainer.innerHTML = `
-            <div class="w-11 h-11 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-black text-base shrink-0">
-                <i class="fas fa-user-check"></i>
-            </div>
-            <div class="text-left">
-                <p class="text-[13px] font-black text-gray-900 leading-tight">${alumnoActivo.nombre} <span class="text-[11px] font-normal text-gray-500">(${alumnoActivo.pais})</span></p>
-                <p class="text-[10px] font-bold text-purple-500 leading-tight mt-0.5">${alumnoActivo.turno}</p>
-                <p class="text-[12px] font-bold text-purple-700 leading-tight mt-0.5">Se inscribió en ${cursoUnico}</p>
-                <span class="text-[10px] text-gray-400 font-medium">Hace unos segundos</span>
-            </div>
-        `;
-
-        notificationContainer.classList.remove('-translate-x-full', 'opacity-0');
-        notificationContainer.classList.add('translate-x-0', 'opacity-100');
-
-        dispararPicaPica();
-
-        // Mantiene la tarjeta 7 segundos visible
-        setTimeout(ocultarNotificacion, 7000);
-    }
-
-    // Primera ejecución a los 3 segundos
-    setTimeout(mostrarNuevaMatricula, 3000);
-
-    // Repetir entre 10 y 18 segundos
-    setInterval(() => {
-        mostrarNuevaMatricula();
-    }, Math.floor(Math.random() * 8000) + 10000);
+      form.style.display = "";
+      document.querySelector(".new").style.display = "";
+      document.querySelector(".foot").style.display = "";
+      status.textContent = "";
+      pass.type = "password";
+      toggle.textContent = "Mostrar";
+      toggle.setAttribute("aria-pressed", "false");
+    });
+  }
 });
