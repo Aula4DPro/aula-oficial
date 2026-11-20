@@ -1,502 +1,372 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4DCADCAM - Especialización Dental</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link rel="stylesheet" href="css/animaciones.css">
-    <link rel="stylesheet" href="css/componentes.css">
-    <link rel="stylesheet" href="css/login.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aula virtual · 4D CAD CAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{
+  --bg:#F3F2EE;--surface:#fff;--ink:#0F172A;--muted:#4B5668;--line:rgba(22,30,49,.2);
+  --field:#F8FAFC;--blue:#1A47D6;--blue-h:#1438AB;--link:#1A47D6;--navy:#0E1626;--on-navy:#EAF0FF;--navy-muted:#AEBBD6;--accent:#7FA2FF;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0B1020;--surface:#141B2E;--ink:#E8ECF6;--muted:#A5AFC4;--line:rgba(232,236,246,.22);--field:#0F1627;--blue:#3F6FF0;--blue-h:#5782F5;--link:#8FB0FF;--navy:#070B16}
+}
+:root[data-theme="dark"]{--bg:#0B1020;--surface:#141B2E;--ink:#E8ECF6;--muted:#A5AFC4;--line:rgba(232,236,246,.22);--field:#0F1627;--blue:#3F6FF0;--blue-h:#5782F5;--link:#8FB0FF;--navy:#070B16}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{height:100%;background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+
+main{
+  min-height:100%;display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  grid-template-rows:auto 1fr;
+  grid-template-areas:"intro access" "benefits access";
+}
+.intro,.benefits{background:var(--navy);color:var(--on-navy)}
+.intro{grid-area:intro;padding:44px clamp(28px,5vw,72px) 0}
+.benefits{grid-area:benefits;padding:8px clamp(28px,5vw,72px) 52px}
+.access{grid-area:access;display:flex;align-items:center;justify-content:center;padding:40px clamp(20px,4vw,56px)}
+
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:clamp(24px,5vh,64px)}
+.mark{width:40px;height:40px;border-radius:10px;background:var(--blue);display:grid;place-items:center;font-weight:800;font-size:.95rem;color:#fff;letter-spacing:-.02em}
+.brand b{display:block;font-size:1rem;font-weight:800;line-height:1.1}
+.brand span{font-size:.8rem;color:var(--navy-muted)}
+
+h1{font-size:clamp(2rem,3.6vw,3.1rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;max-width:15ch}
+.lead{margin-top:18px;font-size:1.02rem;color:var(--navy-muted);max-width:44ch}
+
+.part{display:block;width:100%;max-width:380px;margin-top:34px}
+.part .outline{fill:none;stroke:var(--on-navy);stroke-width:1.6}
+.part .path{fill:none;stroke:var(--accent);stroke-width:1.4;stroke-dasharray:5 5}
+.part .dim{stroke:var(--navy-muted);stroke-width:1}
+.part text{fill:var(--navy-muted);font-size:10px;font-family:inherit}
+.part .draw{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 2.2s .3s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+
+.learning-visual{position:relative;width:100%;max-width:540px;height:290px;margin:4px 0 0 -10px;touch-action:none}
+.learning-visual canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+
+.benefits ul{list-style:none;display:grid;gap:12px;max-width:44ch}
+.benefits li{display:flex;gap:12px;align-items:flex-start;font-weight:600;font-size:.98rem}
+.benefits svg{flex:none;margin-top:3px;stroke:var(--accent)}
+
+.benefits{display:flex;flex-direction:column}
+.benefits ul{margin-bottom:28px}
+.sectors{margin-top:auto;padding-top:18px;border-top:1px solid rgba(234,240,255,.14);max-width:44ch;font-size:.8rem;line-height:1.6;color:var(--navy-muted)}
+
+.panel{width:100%;max-width:400px}
+h2{font-size:1.65rem;font-weight:800;letter-spacing:-.025em;line-height:1.15}
+.panel>p{margin-top:8px;color:var(--muted);font-size:.95rem}
+form{margin-top:26px}
+.field{margin-bottom:18px}
+label{display:block;font-weight:700;font-size:.88rem;margin-bottom:6px}
+.hint{font-size:.8rem;color:var(--muted);margin-top:6px}
+.wrap{position:relative}
+input[type=text],input[type=password]{
+  width:100%;padding:13px 14px;font:inherit;font-size:1rem;color:var(--ink);background:var(--field);
+  border:1.5px solid var(--line);border-radius:10px;transition:border-color .2s,box-shadow .2s
+}
+input[type=password]{padding-right:84px}
+input::placeholder{color:var(--muted);opacity:.7}
+input:focus-visible{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 25%,transparent)}
+.toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:0;font:inherit;font-size:.8rem;font-weight:700;color:var(--link);padding:6px 10px;border-radius:8px;cursor:pointer}
+.toggle:hover{background:color-mix(in srgb,var(--blue) 12%,transparent)}
+.toggle:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.85rem;margin-bottom:22px}
+.remember{display:flex;gap:8px;align-items:center;color:var(--muted);font-weight:500;margin:0;font-size:.85rem;cursor:pointer}
+.remember input{accent-color:var(--blue);width:16px;height:16px}
+.row a{color:var(--link);font-weight:600;text-decoration:none}
+.row a:hover{text-decoration:underline}
+.btn{display:block;width:100%;text-align:center;text-decoration:none;font:inherit;font-weight:700;font-size:1rem;padding:14px;border-radius:10px;cursor:pointer;transition:background-color .2s}
+.primary{background:var(--blue);color:#fff;border:0}
+.primary:hover{background:var(--blue-h)}
+.status{margin-top:12px;font-size:.86rem;font-weight:600;color:var(--link);min-height:1.3em}
+
+.new{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
+.new strong{display:block;font-size:.95rem}
+.new p{font-size:.88rem;color:var(--muted);margin:4px 0 14px}
+.secondary{background:transparent;color:var(--ink);border:1.5px solid var(--line);padding:12px}
+.secondary:hover{border-color:var(--blue);color:var(--link)}
+.foot{margin-top:26px;font-size:.78rem;color:var(--muted);display:flex;gap:14px}
+.foot a{color:inherit;text-decoration:none;font-weight:600}
+.foot a:hover{text-decoration:underline;color:var(--link)}
+
+@media (max-width:860px){
+  main{grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"intro" "access" "benefits"}
+  .intro{padding:28px 22px 30px}
+  .brand{margin-bottom:28px}
+  .lead{font-size:.95rem}
+  .learning-visual{height:275px;margin-top:14px;max-width:440px}
+  .access{padding:30px 22px}
+  .benefits{background:var(--surface);color:var(--ink);padding:26px 22px 40px;border-top:1px solid var(--line)}
+  .benefits svg{stroke:var(--blue)}
+  .sectors{border-top-color:var(--line);color:var(--muted);margin-top:0}
+}
+@media (prefers-reduced-motion:reduce){.part .draw{animation:none;stroke-dashoffset:0}}
+</style>
+
+<style>
+/* Integración funcional: no altera la fachada original */
+.request-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(7,11,22,.62);backdrop-filter:blur(5px)}
+.request-overlay.active{display:flex}
+.request-card{width:100%;max-width:470px;max-height:90vh;overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 24px 80px rgba(0,0,0,.25)}
+.request-card h3{font-size:1.35rem;font-weight:800;letter-spacing:-.02em}
+.request-card>p{font-size:.9rem;color:var(--muted);margin-top:6px}
+.request-field{margin-top:15px}
+.request-field label{display:block;font-size:.84rem;font-weight:700;margin-bottom:6px}
+.request-field input,.request-field select,.request-field textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:9px;background:var(--field);color:var(--ink);font:inherit;font-size:.95rem}
+.request-field textarea{min-height:84px;resize:vertical}
+.request-actions{display:flex;gap:10px;margin-top:20px}
+.request-actions button{flex:1;border-radius:9px;padding:12px;font:inherit;font-weight:700;cursor:pointer}
+.request-cancel{border:1px solid var(--line);background:transparent;color:var(--ink)}
+.request-submit{border:0;background:var(--blue);color:white}
+.request-message{min-height:1.3em;margin-top:12px;font-size:.85rem;font-weight:600;color:var(--link)}
+#cursos-container{position:fixed;inset:0;z-index:900;background:#fff;overflow-y:auto}
+#cursos-container.hidden{display:none}
+@media(max-width:520px){.request-card{padding:21px}.request-actions{flex-direction:column}}
+</style>
+
 </head>
-<body class="bg-gray-50 flex flex-col min-h-screen">
-
-<header class="p-4 flex items-center justify-between border-b bg-white sticky top-0 z-50">
-    <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center border-2 border-[#a855f7]">
-            <i class="fas fa-cube text-[#a855f7] text-sm"></i>
-        </div>
-        <div>
-            <h2 class="text-black font-bold text-[18px] leading-tight">4D CAD CAM</h2>
-            <span class="text-[7px] text-gray-400 font-bold uppercase tracking-wider">"Aprende, Crea y Comparte"</span>
-        </div>
+<body>
+<main>
+  <section class="intro">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">4D</div>
+      <div><b>4D CAD CAM</b><span>Aula virtual</span></div>
     </div>
-    <!-- FIX 5: pill más compacta en móvil + whitespace-nowrap para evitar salto -->
-    <span class="text-[10px] sm:text-sm font-extrabold text-[#ec4899] border-2 border-[#ec4899] px-2 sm:px-3 py-1 sm:py-1.5 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">Inicio: 23 de noviembre</span>
-</header>
+    <h1>Tu formación continúa aquí.</h1>
+    <p class="lead">Un espacio diseñado para acompañar tu aprendizaje, organizar tus recursos y ayudarte a avanzar en cada etapa de tu formación.</p>
+    <div class="learning-visual" aria-hidden="true"><canvas id="tech"></canvas></div>
+  </section>
 
-<!-- FIX 3: paddings y spacing responsivos -->
-<main class="flex-grow p-4 sm:p-6 space-y-4 sm:space-y-6">
-    
-    <!-- FIX 3: padding responsive del contador -->
-    <section class="countdown-container p-4 sm:p-6 text-white text-center shadow-lg">
-        <p class="text-[10px] font-black uppercase tracking-[0.2em] mb-4">El inicio de clases comienza en:</p>
-        <!-- FIX 3: gap responsive -->
-        <div class="flex justify-center items-center gap-2 sm:gap-4">
-            <!-- FIX 3: números responsive -->
-            <div><span id="days" class="text-2xl sm:text-3xl font-black">14</span><p class="text-[9px] font-bold opacity-70 mt-1 uppercase">Días</p></div>
-            <span class="text-xl opacity-30">:</span>
-            <div><span id="hours" class="text-2xl sm:text-3xl font-black">08</span><p class="text-[9px] font-bold opacity-70 mt-1 uppercase">Hrs</p></div>
-            <span class="text-xl opacity-30">:</span>
-            <div><span id="minutes" class="text-2xl sm:text-3xl font-black">36</span><p class="text-[9px] font-bold opacity-70 mt-1 uppercase">Min</p></div>
-            <span class="text-xl opacity-30">:</span>
-            <div><span id="seconds" class="text-2xl sm:text-3xl font-black text-yellow-300">17</span><p class="text-[9px] font-bold opacity-70 mt-1 uppercase text-yellow-300">Seg</p></div>
+  <section class="access">
+    <div class="panel">
+      <p id="saludo-previo" style="display:none; font-size:1.05rem; color:var(--ink); margin-bottom:10px;">
+        Hola, <strong id="usuario-recordado"></strong>
+      </p>
+      <h2>Bienvenido a tu aula</h2>
+      <p>Ingresa con los datos de acceso que recibiste al matricularte.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="userId">ID de usuario</label>
+          <input id="userId" type="text" placeholder="Ej. tu ID de alumno" autocomplete="username" required>
         </div>
-    </section>
-
-    <section>
-    <!-- FIX 3 (opcional): h1 responsive -->
-    <h1 class="text-xl sm:text-2xl font-black text-gray-900 leading-tight">Especialización en Sistema Dental CAD CAM</h1>
-    
-    <div class="mt-2 mb-4 space-y-1 text-left">
-        <p class="text-xs md:text-sm font-bold text-[#a855f7]">
-            Formación internacional online en vivo • Duración 3 meses • Incluye 6 módulos
-        </p>
-        <p class="text-[11px] md:text-xs text-gray-500 font-medium italic">
-            Haz clic en cada módulo para explorar o conocer más
-        </p>
-    </div>
-
-    <div class="grid grid-cols-2 gap-3 mt-4">
-        <button onclick="openModal('mod-basico')" class="p-4 bg-white border border-gray-200 rounded-2xl shadow-sm text-left"><i class="fas fa-layer-group text-blue-500 mb-2"></i><span class="text-xs font-bold block">1. Exocad Básico ⭐⭐⭐</span></button>
-        <button onclick="openModal('mod-intermedio')" class="p-4 bg-white border border-gray-200 rounded-2xl shadow-sm text-left"><i class="fas fa-wand-magic-sparkles text-purple-500 mb-2"></i><span class="text-xs font-bold block">2. Exocad Intermedio ⭐⭐⭐</span></button>
-        <button onclick="openModal('mod-avanzado')" class="p-4 bg-white border border-gray-200 rounded-2xl shadow-sm text-left"><i class="fas fa-crown text-orange-500 mb-2"></i><span class="text-xs font-bold block">3. Exocad Avanzado ⭐⭐⭐</span></button>
-        <button onclick="openModal('mod-friki')" class="p-4 bg-black border border-gray-800 rounded-2xl shadow-sm text-left text-white"><i class="fas fa-biohazard text-yellow-400 mb-2"></i><span class="text-xs font-bold block">4. Exocad Modo FriKi ⭐⭐⭐⭐⭐</span></button>
-        <button onclick="openModal('mod-3d')" class="p-4 bg-white border border-gray-200 rounded-2xl shadow-sm text-left"><i class="fas fa-print text-green-500 mb-2"></i><span class="text-xs font-bold block">5. Impresión 3D Dental ⭐⭐⭐</span></button>
-        <button onclick="openModal('mod-cnc')" class="p-4 bg-white border border-gray-200 rounded-2xl shadow-sm text-left"><i class="fas fa-tools text-red-500 mb-2"></i><span class="text-xs font-bold block">6. Fresado Dental CNC ⭐⭐⭐</span></button>
-    </div>
-    </section>
-
-    <section class="space-y-3">
-        <div class="dropdown-card">
-            <button onclick="toggleAccordion('detalles-content', 'arrow-1')" class="w-full p-5 flex justify-between items-center"><span class="text-xs font-black uppercase tracking-wider">📋Detalles del Programa</span><i id="arrow-1" class="fas fa-chevron-down text-gray-400 text-xs transition-transform"></i></button>
-            <div id="detalles-content" class="content-dropdown">
-                <div class="p-5 pt-0 space-y-3 text-[11px] text-gray-600">
-                    <div class="text-[11px] text-gray-600 font-medium space-y-2 mb-3">
-                        <p class="font-bold text-gray-800">Descripción</p>
-                        <p>Especialización Avanzada en <strong>Sistema Dental CAD CAM,</strong> dirigida a odontólogos y técnicos dentales que desean dominar el diseño digital de restauraciones dentales.</p>
-                        <p><strong>Nivel de Formación:</strong> No importa si estás empezando desde cero, Con nuestro método de enseñanza <span class="text-[#a855f7] font-bold">Exocad Modo Friki,</span> te llevamos desde la iniciación absoluta hasta un nivel experto.</p>
-                        <p><strong>Ideal para:</strong> Profesionales que buscan validar su conocimiento con la doble certificación de la academia <strong>4D CAD CAM</strong>.</p>
-                        <p><strong>Capacitación:</strong> oficial basada en nuestros propios estándares 4D CAD CAM.</p>
-                        <p class="text-purple-600 font-semibold">Potencia tu perfil profesional con doble certificación de la academia 4D CAD CAM.</p>
-                    </div>
-                    <div class="bg-purple-50 border border-purple-200 rounded-xl p-3 flex items-center gap-2 text-[11px] font-semibold text-purple-700"><i class="fas fa-users text-purple-500"></i> +1500 profesionales de Latinoamérica ya se han capacitado en 4D CAD CAM</div>
-                    <div class="space-y-2.5">
-                        <div class="flex items-center gap-3"><i class="far fa-calendar-alt text-purple-500 w-4"></i> Duración: 3 meses académicos.</div>
-                        <div class="flex items-center gap-3"><i class="far fa-clock text-purple-500 w-4"></i> Frecuencia: 2 días por semana.</div>
-                        <div class="flex items-center gap-3"><i class="far fa-clock text-purple-500 w-4"></i> Sesiones: 2 hrs por día.</div>
-                        <div class="flex items-center gap-3"><i class="fas fa-desktop text-purple-500 w-4"></i> Incluye: Aula Virtual 24/7.</div>
-                        <div class="flex items-center gap-3"><i class="fas fa-video text-purple-500 w-4"></i> Opción: Descarga de videos interactivos.</div>
-                        <div class="flex items-center gap-3"><i class="fas fa-box-open text-purple-500 w-4"></i> Materiales: Modelos escaneados incluidos.</div>
-                        <div class="flex items-center gap-3"><i class="fas fa-trophy text-purple-500 w-4"></i> Certificado y Trofeo 3D Diseñador Exocad Modo Friki.</div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-dashed border-purple-200">
-                        <div class="bg-gradient-to-br from-gray-900 to-purple-900 rounded-2xl p-4 shadow-lg overflow-hidden relative">
-                            <div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full blur-2xl"></div>
-                            <div class="flex justify-between items-center relative z-10">
-                                <div><p class="text-[9px] font-black text-purple-300 uppercase tracking-widest mb-1">Inversión Especialización</p><h4 class="text-white text-[11px] font-bold leading-tight">Acceso Total: 6 Módulos +<br>Trofeo 3D y Certificación</h4></div>
-                                <div class="text-right"><p class="text-[10px] text-purple-300 font-bold line-through opacity-60 mb-0">Antes $ 700</p><div class="flex items-baseline justify-end gap-1"><span class="text-white text-[10px] font-bold">$</span><span class="text-white text-3xl font-black tracking-tighter">499</span></div><span class="inline-block bg-orange-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter mb-1">Pago Único</span><p class="text-[7px] text-purple-200 leading-tight font-medium opacity-80">+ IVA / Impuesto Transacción<br>Internacional (5.53%)</p></div>
-                            </div>
-                        </div>
-                        <div class="mt-4 bg-gray-50 rounded-xl p-3 border border-gray-200">
-                            <p class="text-[10px] font-black text-purple-700 uppercase tracking-wider mb-2">Conversor a tu moneda 🪙🪙🪙🪙🪙</p>
-                            <div class="flex flex-col gap-2">
-                                <select id="currency-select" onchange="convertirMoneda()" class="bg-gray-800 text-white text-xs rounded-lg p-2 border border-purple-500/50 focus:outline-none">
-                                    <option value="">Selecciona tu país</option>
-                                    <option value="PEN|3.50">Perú (PEN) - S/ 3.5</option><option value="MXN|18.05">México (MXN) - $ 18.05</option><option value="COP|3675.86">Colombia (COP) - $ 3675.86</option><option value="CLP|925.99">Chile (CLP) - $ 925.99</option><option value="ARS|1385.53">Argentina (ARS) - $ 1385.53</option><option value="BOB|6.96">Bolivia (BOB) - Bs 6.96</option><option value="UYU|40.61">Uruguay (UYU) - $ 40.61</option><option value="PYG|6537.92">Paraguay (PYG) - ₲ 6537.92</option><option value="EUR|0.89">Euro (EUR) - € 0.89</option><option value="USD|1.00">EEUU / Ecuador / El Salvador (USD) - $ 1.00</option><option value="CRC|464.37">Costa Rica (CRC) - ₡ 464.37</option><option value="NIO|36.80">Nicaragua (NIO) - C$ 36.80</option><option value="HNL|26.55">Honduras (HNL) - L 26.55</option><option value="GTQ|5.67">Guatemala (GTQ) - Q 7.67</option><option value="DOP|59.53">Rep. Dominicana (DOP) - RD$ 59.53</option><option value="PAB|1.00">Panamá (PAB) - B/. 1.00</option><option value="custom|0">Otro (ingresa tu tasa)</option>
-                                </select>
-                            </div>
-                            <div id="custom-rate-container" class="hidden mt-2"><input type="number" id="custom-rate" oninput="convertirMoneda()" placeholder="Tipo de cambio (1 USD = ?)" class="w-full bg-gray-800 text-white text-xs rounded-lg p-2 border border-purple-500/50 focus:outline-none" step="0.01"></div>
-                            <div class="text-center mt-2"><div id="converted-price" class="text-purple-700 text-3xl font-black leading-none">--</div><p class="text-gray-800 text-[10px] font-bold uppercase tracking-wider mt-1">Inversión estimada en tu moneda</p><div class="text-gray-500 text-[9px] mt-2 pt-2 border-t border-gray-100"><span>+ Arancel transf. int. (5.53%):</span> <span id="converted-tax" class="text-gray-700 font-bold">--</span></div><p class="text-[8px] text-purple-600 mt-1">* Tipos de cambio referenciales, el monto final sujeto a impuestos.</p></div>
-                            <p class="text-center text-[9px] text-gray-400 mt-2 font-medium italic">* Sin mensualidades ni cobros adicionales por certificación.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <div class="wrap">
+            <input id="password" type="password" placeholder="Tu contraseña" autocomplete="current-password" required>
+            <button type="button" class="toggle" id="toggle" aria-controls="password" aria-pressed="false">Mostrar</button>
+          </div>
         </div>
-
-        <div class="dropdown-card">
-            <button onclick="toggleAccordion('horarios-content', 'arrow-2')" class="w-full p-5 flex justify-between items-center"><span class="text-xs font-black uppercase tracking-wider">📅Horarios Disponibles</span><i id="arrow-2" class="fas fa-chevron-down text-gray-400 text-xs transition-transform"></i></button>
-            <div id="horarios-content" class="content-dropdown">
-                <div class="p-4 bg-blue-50/50 rounded-xl m-2">
-                    <div class="pulse-effect text-center mb-6"><h4 class="text-[14px] font-black text-gray-900 uppercase tracking-widest mb-2">Aquí inicia tu proceso de inscripción 🔔</h4><p class="text-[11px] font-bold text-indigo-600 text-center mb-4">Las sesiones se rigen bajo la Hora Perú</p></div>
-                    <div class="space-y-4">
-                    <!-- GRUPO 1 -->
-                    <div>
-                        <p class="text-[10px] font-black text-purple-600 mb-2 uppercase">Lunes y Jueves (G1)</p>
-                        <div class="space-y-1">
-                            <button class="w-full flex justify-between p-3 bg-white border border-purple-100 rounded-xl text-[10px] font-bold text-left">
-                                <span>Mañana: 10:30 a.m. - 12:30 p.m.</span> <span class="text-purple-400">Aula A</span>
-                            </button>
-                            <button class="w-full flex justify-between p-3 bg-white border border-purple-100 rounded-xl text-[10px] font-bold text-left">
-                                <span>Tarde: 04:00 p.m. - 06:00 p.m.</span> <span class="text-purple-400">Aula B</span>
-                            </button>
-                            <button class="w-full flex justify-between p-3 bg-white border border-purple-100 rounded-xl text-[10px] font-bold text-left">
-                                <span>Noche: 06:30 p.m. - 08:30 p.m.</span> <span class="text-purple-400">Aula C</span>
-                            </button>
-                            <button class="w-full flex justify-between p-3 bg-white border border-purple-100 rounded-xl text-[10px] font-bold text-left">
-                                <span>Noche: 09:00 p.m. - 11:00 p.m.</span> <span class="text-purple-400">Aula D</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- GRUPO 2 -->
-                    <div>
-                        <p class="text-[10px] font-black text-pink-600 mb-2 uppercase">Martes y Miércoles (G2)</p>
-                        <div class="space-y-1">
-                            <button class="w-full flex justify-between p-3 bg-white border border-pink-100 rounded-xl text-[10px] font-bold text-left">
-                                <span>Tarde: 04:00 p.m. - 06:00 p.m.</span> <span class="text-pink-400">Aula B</span>
-                            </button>
-                             <button class="w-full flex justify-between p-3 bg-white border border-pink-100 rounded-xl text-[10px] font-bold text-left">
-                                <span>Noche: 06:30 p.m. - 08:30 p.m.</span> <span class="text-pink-400">Aula C</span>
-                            </button>
-                            <button class="w-full flex justify-between p-3 bg-white border border-pink-100 rounded-xl text-[10px] font-bold text-left">
-                                <span>Noche: 09:00 p.m. - 11:00 p.m.</span> <span class="text-pink-400">Aula D</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="px-4 mb-6"><p class="text-[11px] font-medium text-gray-800 text-center leading-relaxed">Selecciona tu horario de preferencia (Mañana, Tarde o Noche).</p></div>
-                </div>
-                </div>
-            </div>
+        <div class="row">
+          <label class="remember"><input type="checkbox"> Mantener sesión iniciada</label>
+          <a href="#recuperar">¿Olvidaste tu contraseña?</a>
         </div>
+        <button class="btn primary" type="submit">Ingresar a mi aula</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
 
-        <div class="dropdown-card">
-            <button onclick="toggleAccordion('instructor-content', 'arrow-3')" class="w-full p-5 flex justify-between items-center"><span class="text-xs font-black uppercase tracking-wider">👨‍🏫Presentación del Instructor</span><i id="arrow-3" class="fas fa-chevron-down text-gray-400 text-xs transition-transform"></i></button>
-            <div id="instructor-content" class="content-dropdown">
-                <div class="p-5 space-y-4 text-gray-700">
-                    <div class="text-center border-b border-gray-100 pb-4"><h3 class="text-sm font-black text-[14px] uppercase tracking-wide">Linder Efrain Briones Paredes</h3><p class="text-[08px] font-bold text-[#a855f7] uppercase">Especialista Manufactura Digital y Sistemas 3D</p></div>
-                    <div class="text-[11px] leading-relaxed space-y-3 font-medium text-gray-600"><p>Con más de <strong>12 años de trayectoria</strong>, Es un emprendedor peruano especializado en odontología digital y tecnología CAD CAM. Es fundador de la empresa 4D CAD CAM, una initiative dedicada a la formación y capacitación internacional en diseño dental digital, impresión 3D y flujo de trabajo CAD CAM. A través de su programa educativo "Exocad Modo Friki", ha desarrollado una metodología práctica para enseñar el uso avanzado del software Exocad, combinando conocimientos de ingeniería y odontología digital. Sus capacitaciones se imparten online en vivo y han formado a profesionales de más de 12 países de Latinoamérica.</p><p>Fundador de <span class="font-bold text-gray-900">4D CAD CAM</span> y creador de las marcas <span class="text-[#a855f7] font-extrabold italic">Inka Peru CAD</span> (Empresa dedicada al desarrollo de tecnología avanzada) y <span class="text-[#a855f7] font-extrabold italic">Exocad Modo FriKi</span> (Metodología de enseñanza especializada); Marcas protegidas legalmente ante <strong><a href="https://pi.indecopi.gob.pe/buscatumarca/#/inicio" target="_blank" class="text-[#a855f7] underline decoration-dotted hover:text-purple-700 transition-colors">INDECOPI</a></strong>.</p></div>
-                    <div class="bg-gray-50 p-3 rounded-2xl"><h4 class="text-[10px] font-black text-gray-900 uppercase mb-2 flex items-center gap-2"><i class="fas fa-microchip text-blue-500"></i> Softwares que Domina el Experto</h4><p class="text-[9px] text-gray-500 font-medium mb-3 italic">Haz clic en cada herramienta para conocer más sobre su tecnología oficial.</p><div class="flex flex-wrap gap-2 justify-start items-center"><a href="https://exocad.com/es/" target="_blank" class="group relative px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] font-black text-gray-700 tracking-tight shadow-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[#a855f7] hover:text-[#a855f7] hover:shadow-md active:scale-95 flex items-center gap-1.5 h-[32px]">Exocad <i class="fas fa-external-link-alt text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i></a><a href="https://exocad.com/es/productos/exoplan" target="_blank" class="group relative px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] font-black text-gray-700 tracking-tight shadow-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[#a855f7] hover:text-[#a855f7] hover:shadow-md active:scale-95 flex items-center gap-1.5 h-[32px]">Exoplan <i class="fas fa-external-link-alt text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i></a><a href="https://exocad.com/es/productos/exocad-dentalcad/partialcad" target="_blank" class="group relative px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] font-black text-gray-700 tracking-tight shadow-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[#a855f7] hover:text-[#a855f7] hover:shadow-md active:scale-95 flex items-center gap-1.5 h-[32px]">PartialCAD <i class="fas fa-external-link-alt text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i></a><a href="https://meshmixer.org/" target="_blank" class="group relative px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] font-black text-gray-700 tracking-tight shadow-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[#a855f7] hover:text-[#a855f7] hover:shadow-md active:scale-95 flex items-center gap-1.5 h-[32px]">Meshmixer <i class="fas fa-external-link-alt text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i></a><a href="https://www.chitubox.com/en/index" target="_blank" class="group relative px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] font-black text-gray-700 tracking-tight shadow-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[#a855f7] hover:text-[#a855f7] hover:shadow-md active:scale-95 flex items-center gap-1.5 h-[32px]">Chitubox <i class="fas fa-external-link-alt text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i></a><a href="https://ultimaker.com/es/software/ultimaker-cura/" target="_blank" class="group relative px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] font-black text-gray-700 tracking-tight shadow-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[#a855f7] hover:text-[#a855f7] hover:shadow-md active:scale-95 flex items-center gap-1.5 h-[32px]">Ultimaker <i class="fas fa-external-link-alt text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i></a><a href="https://www.solidworks.com/es" target="_blank" class="group relative px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] font-black text-gray-700 tracking-tight shadow-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[#a855f7] hover:text-[#a855f7] hover:shadow-md active:scale-95 flex items-center gap-1.5 h-[32px]">Solidworks <i class="fas fa-external-link-alt text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i></a><a href="https://hexagon.com/es/products/geomagic-freeform" target="_blank" class="group relative px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] font-black text-gray-700 tracking-tight shadow-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[#a855f7] hover:text-[#a855f7] hover:shadow-md active:scale-95 flex items-center gap-1.5 h-[32px]">Freeform <i class="fas fa-external-link-alt text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i></a></div></div>
-                </div>
-            </div>
+      <div class="new">
+        <strong>¿Aún no tienes acceso?</strong>
+        <p>Tu cuenta se activa al inscribirte en un curso de la Academia.</p>
+        <a class="btn secondary" href="#solicitar-acceso" id="openRequestAccess">Solicitar acceso</a>
+      </div>
+
+      <div class="foot" style="flex-wrap:wrap;">
+          <a href="privacidad.html" target="_blank" rel="noopener">Privacidad</a>
+          <a href="terminos.html" target="_blank" rel="noopener">Términos</a>
+          <a href="deslinde.html" target="_blank" rel="noopener">Deslinde</a>
+          <a href="libro-reclamaciones.html" target="_blank" rel="noopener">Libro de reclamaciones</a>
         </div>
+      </section>
 
-        <!-- FIX 4: layout responsive (columna en móvil, fila en desktop) -->
-        <div class="mt-6 max-w-xl mx-auto bg-gray-50 border border-gray-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        
-        <div>
-            <p class="text-sm text-gray-500">¿Buscas otro tipo de formación?</p>
-            <p class="text-sm font-semibold text-gray-700">Explora más cursos y especializaciones</p>
-        </div>
-
-         <button onclick="openModalCursos()" class="w-full sm:w-auto ml-0 sm:ml-4 px-4 py-2 text-sm font-medium rounded-full bg-[#a855f7] text-white hover:bg-purple-600 transition">
-            Ver cursos
-        </button>
-
-        </div>
-        
-    </section>
-
-    <button onclick="openModalInscripcion()" class="btn-gradient w-full py-5 rounded-2xl flex items-center justify-between px-6 text-white shadow-xl pulse-effect"><span class="font-black uppercase text-sm tracking-widest">Inicia tu inscripción</span><i class="fas fa-user-plus"></i></button>
-    <div class="h-10"></div>
+  <section class="benefits" aria-label="Qué encuentras dentro del aula">
+    <ul>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Continúa tus clases y actividades</li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Consulta tus materiales y recursos de aprendizaje</li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Organiza tu recorrido de formación</li>
+    </ul>
+    <p class="sectors">Cursos en vivo, online y presenciales en Perú, con alcance nacional e internacional, en odontología, salud, inteligencia artificial, industria y desarrollo personal.</p>
+  </section>
 </main>
 
-<footer class="sticky bottom-0 p-4 bg-white/80 backdrop-blur-md border-t">
-    <button onclick="openModalAula()" class="btn-gradient w-full p-4 rounded-2xl flex items-center gap-4 text-white shadow-lg"><div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><i class="fas fa-user-graduate"></i></div><div class="text-left"><h4 class="text-xs font-black uppercase leading-tight">Aula Virtual</h4><p class="text-[9px] font-bold opacity-80 uppercase">Acceso para alumnos matriculados</p></div><i class="fas fa-chevron-right ml-auto text-[10px] opacity-50"></i></button>
-</footer>
-
-<!-- MODALS -->
-<div id="modal-container" class="modal" onclick="closeModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div><h3 id="modal-title" class="text-xl font-black mb-4 uppercase">Temario</h3><div id="modal-list" class="space-y-3"></div><button onclick="closeModal(null)" class="w-full mt-6 py-3 bg-gray-100 font-bold rounded-xl text-gray-500">Cerrar</button></div></div>
-
-<div id="modal-inscripcion" class="modal" onclick="closeModalInscripcion(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
-        <h3 class="text-xl font-black mb-4 uppercase text-gray-900">Formulario de Inscripción</h3>
-        <div id="g_id_onload" data-client_id="337788899978-n1l6jpsv1nalpijmdab3i7rfu8vmu89u.apps.googleusercontent.com" data-callback="handleGoogleSignIn" data-auto_prompt="false"></div>
-        <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
-        
-        <form id="form-inscripcion" class="space-y-4 mt-4">
-            <input name="nombre" type="text" placeholder="Nombre" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required>
-            <input name="apellidos" type="text" placeholder="Apellidos" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required>
-            <input name="correo" type="email" placeholder="Correo electrónico" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500 hidden" required>
-            <input name="whatsapp" type="tel" placeholder="WhatsApp (Ej: +51...)" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required>
-            
-            
-            <div class="mb-4">
-                <div class="relative">
-                    <select name="profesion" onchange="this.style.color='#1f2937'" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl text-[14px] font-medium text-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer shadow-sm" required>
-                        <option value="" disabled selected>Selecciona tu profesión</option>
-                        <option value="Odontólogo">Odontólogo</option>
-                        <option value="Técnico Dental">Técnico Dental</option>
-                        <option value="Estudiante">Estudiante</option>
-                        <option value="Especialista">Especialista</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                        <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <div class="relative">
-                    <select name="pais" onchange="this.style.color='#1f2937'" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl text-[14px] font-medium text-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer shadow-sm" required>
-                        <option value="" disabled selected>Selecciona tu país</option>
-                        <option value="Perú">Perú</option>
-                        <option value="México">México</option>
-                        <option value="Colombia">Colombia</option>
-                        <option value="Chile">Chile</option>
-                        <option value="Ecuador">Ecuador</option>
-                        <option value="Argentina">Argentina</option>
-                        <option value="Bolivia">Bolivia</option>
-                        <option value="Uruguay">Uruguay</option>
-                        <option value="Paraguay">Paraguay</option>
-                        <option value="España">España</option>
-                        <option value="Costa Rica">Costa Rica</option>
-                        <option value="Nicaragua">Nicaragua</option>
-                        <option value="Honduras">Honduras</option>
-                        <option value="Venezuela">Venezuela</option>
-                        <option value="EEUU">EEUU</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                        <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <div class="relative">
-                    <select id="timezone-select" onchange="actualizarHorariosLocales(this.value); this.style.color='#1f2937'" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl text-[14px] font-medium text-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer shadow-sm">
-                        <option value="" disabled selected>Elige tu zona horaria...</option>
-                        <option value="-5">Perú, Colombia, Ecuador, Panamá (UTC-5)</option>
-                        <option value="-6">Costa Rica, Nicaragua, Honduras, Guatemala, El Salvador, México (CDMX) (UTC-6)</option>
-                        <option value="-4">Venezuela, Bolivia, Chile, Paraguay (UTC-4)</option>
-                        <option value="-3">Argentina, Uruguay, Brasil (UTC-3)</option>
-                        <option value="-7">México (Pacífico), EE.UU. (Mountain) (UTC-7)</option>
-                        <option value="-8">EE.UU. (Pacific), México (Tijuana) (UTC-8)</option>
-                        <option value="0">España, Portugal (UTC+0/UTC+1)</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                        <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <div class="relative">
-                    <select id="horario-select" name="horario_completo" onchange="this.style.color='#1f2937'" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl text-[14px] font-medium text-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer shadow-sm" required>
-                        <option value="" disabled selected>Elige tu horario...</option>
-                        <!-- GRUPO 1: LUNES Y JUEVES -->
-                        <option value="Lun y Jue|Mañana|10:30 - 12:30">Lunes y Jueves - Mañana (10:30 a.m. - 12:30 p.m.) - Aula A</option>
-                        <option value="Lun y Jue|Tarde|04:00 - 06:00">Lunes y Jueves - Tarde (04:00 p.m. - 06:00 p.m.) - Aula B</option>
-                        <option value="Lun y Jue|Noche|06:30 - 08:30">Lunes y Jueves - Noche (06:30 p.m. - 08:30 p.m.) - Aula C</option>
-                        <option value="Lun y Jue|Noche|09:00 - 11:00">Lunes y Jueves - Noche (09:00 p.m. - 11:00 p.m.) - Aula D</option>
-
-                        <!-- GRUPO 2: MARTES Y MIÉRCOLES -->
-                        <option value="Mar y Mié|Tarde|04:00 - 06:00">Martes y Miércoles - Tarde (04:00 p.m. - 06:00 p.m.) - Aula B</option>
-                        <option value="Mar y Mié|Noche |06:30 - 08:30">Martes y Miércoles - Noche (06:30 p.m. - 08:30 p.m.) - Aula C</option>
-                        <option value="Mar y Mié|Noche |09:00 - 11:00">Martes y Miércoles - Noche (09:00 p.m. - 11:00 p.m.) - Aula D</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                        <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center text-[10px] text-gray-400 mt-4 pt-2 border-t border-gray-100">
-                Al registrarte, aceptas nuestra <a href="https://drive.google.com/file/d/1qR4HmX_Cqai2vB7vYTN5f_h087MsamRy/view?usp=drive_link" target="_blank" class="text-gray-500 hover:text-purple-600 underline">Política de Privacidad</a> y <a href="https://drive.google.com/file/d/1_OvdSM5ps2KJrfMZwOOI6Y6hOdnZ9QXE/view?usp=drive_link" target="_blank" class="text-gray-500 hover:text-purple-600 underline">Términos y Condiciones</a>.
-            </div>
-
-            <button type="submit" id="submitBtn" class="btn-gradient w-full py-3 rounded-xl text-white font-bold shadow-lg" disabled>Enviar inscripción</button>
-        </form>
-
-        <button onclick="closeModalInscripcion()" class="w-full mt-4 py-3 bg-gray-100 font-bold rounded-xl text-gray-500 hover:bg-gray-200 transition">Cerrar</button>
+<div id="cursos-container" class="hidden">
+  <div class="w-full min-h-screen bg-white overflow-y-auto p-3 sm:p-4">
+    <div class="w-full h-px bg-gray-100 mb-4"></div>
+    <div class="max-w-5xl mx-auto">
+      <div class="flex justify-between items-center gap-3 mb-4">
+        <h2 id="saludo-usuario" class="text-lg font-black text-blue-700 text-center uppercase"></h2>
+        <button id="logoutAula" type="button" class="px-4 py-2 rounded-lg border border-gray-200 text-xs font-bold text-gray-600">Cerrar sesión</button>
+      </div>
+      <div class="space-y-4 mb-6">
+        <div class="flex flex-col gap-3">
+          <button id="btn-meet-en-vivo" style="display:none;" class="w-full py-4 rounded-xl flex items-center justify-center gap-3 text-white bg-blue-700 shadow-lg font-bold"></button>
+          <button id="btn-confirmar-asistencia" style="display:none;" onclick="marcarAsistenciaManual()" class="w-full py-4 bg-green-600 rounded-xl flex items-center justify-center gap-3 text-white shadow-lg font-black uppercase text-xs tracking-widest"></button>
+        </div>
+        <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[10px] font-black text-gray-500 uppercase">Tu avance académico</span>
+            <span id="porcentaje-texto" class="text-xs font-black text-blue-700">0%</span>
+          </div>
+          <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div id="barra-progreso" class="h-full bg-blue-600 transition-all duration-1000" style="width:0%"></div>
+          </div>
+          <p class="text-[8px] text-gray-400 mt-2 font-bold uppercase text-right">Sesiones completadas: <span id="clases-contadas">0</span> / 24</p>
+        </div>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-black text-black text-center uppercase tracking-tighter mb-6">Aula virtual · 4D CAD CAM</h2>
+      <div id="lista-modulos-aula" class="space-y-2"></div>
     </div>
+  </div>
 </div>
 
-<!-- FIX 3 (opcional): padding responsive del contenedor del aula virtual -->
-<div id="modal-aula" class="modal" onclick="closeModalAula(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div><h3 class="text-xl font-black mb-4 uppercase text-gray-900">Acceso Aula Virtual</h3><form id="form-aula" class="space-y-4"><input type="text" placeholder="ID de usuario" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required><input type="password" placeholder="Contraseña" class="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-purple-500" required><button type="submit" class="btn-gradient w-full py-3 rounded-xl text-white font-bold shadow-lg">Ingresar</button></form><div id="cursos-container" class="hidden fixed inset-0 z-[200] w-full h-screen bg-white overflow-y-auto p-3 sm:p-4 m-0"><div class="w-full h-px bg-gray-100 mb-4"></div><h2 id="saludo-usuario" class="text-lg font-black text-purple-700 text-center uppercase mb-2"></h2><div class="space-y-4 mb-6"><div class="flex flex-col gap-3"><button id="btn-meet-en-vivo" style="display:none;" class="btn-live-session w-full py-4 rounded-2xl flex items-center justify-center gap-3 text-white shadow-lg"></button><button id="btn-confirmar-asistencia" style="display:none;" onclick="marcarAsistenciaManual()" class="w-full py-4 bg-green-600 rounded-2xl flex items-center justify-center gap-3 text-white shadow-lg font-black uppercase text-xs tracking-widest border-b-4 border-green-800 active:border-b-0 transition-all"><i class="fas fa-check-circle"></i> Confirmar Asistencia</button></div><div class="p-4 bg-gray-50 rounded-2xl border border-gray-200 shadow-inner"><div class="flex justify-between items-center mb-2"><span class="text-[10px] font-black text-gray-500 uppercase">Tu Avance Académico</span><span id="porcentaje-texto" class="text-xs font-black text-purple-700">0%</span></div><div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden"><div id="barra-progreso" class="h-full bg-blue-600 transition-all duration-1000" style="width: 0%"></div></div><p class="text-[8px] text-gray-400 mt-2 font-bold uppercase text-right">Sesiones completadas: <span id="clases-contadas">0</span> / 24</p></div></div><h2 class="text-2xl sm:text-3xl font-black text-black text-center uppercase tracking-tighter mb-6">Esp. Sistema Dental CAD CAM</h2><div id="lista-modulos-aula" class="space-y-2"></div></div></div></div>
+
+<script>
+(()=>{
+const cv=document.getElementById('tech'),ctx=cv.getContext('2d'),host=document.querySelector('.intro');
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const AC='127,162,255',PI2=Math.PI*2,N=5,R=1.85,R2=2.2,FY=1.35;
+let W,H,dpr,mx=0,my=0,sx=0,sy=0,last=0,curT=0,uy=0,up=0,vy=0,vp=0,boost=0,ex1=0,ex2=0,dragging=false,lx=0,ly=0,ln=0,hinted=false,asked=false;const rip=[];
+function size(){dpr=Math.min(devicePixelRatio||1,2);const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+size();addEventListener('resize',size);
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v)),rnd=(a,b)=>a+Math.random()*(b-a);
+host.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||dragging)return;const r=cv.getBoundingClientRect();mx=cl((e.clientX-r.left)/r.width*2-1,-1,1);my=cl((e.clientY-r.top)/r.height*2-1,-1,1)});
+host.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')mx=my=0});
+/* arrastrar para girar el modelo (mouse y dedo), con inercia */
+const tilt=e=>{if(dragging||e.gamma==null)return;mx=cl(e.gamma/25,-1,1);my=cl((e.beta-45)/25,-1,1)};
+const DO=window.DeviceOrientationEvent;
+if(DO&&!DO.requestPermission)addEventListener('deviceorientation',tilt);
+cv.addEventListener('pointerdown',e=>{dragging=true;vy=vp=0;lx=e.clientX;ly=e.clientY;ln=performance.now();try{cv.setPointerCapture(e.pointerId)}catch(_){}
+  const r=cv.getBoundingClientRect();rip.push({x:e.clientX-r.left,y:e.clientY-r.top,t:curT});cv.style.cursor='grabbing';
+  if(navigator.vibrate)navigator.vibrate(6);
+  if(DO&&DO.requestPermission&&!asked){asked=true;DO.requestPermission().then(p=>{if(p==='granted')addEventListener('deviceorientation',tilt)}).catch(()=>{})}});
+cv.addEventListener('pointermove',e=>{if(!dragging)return;const k=e.pointerType==='touch'?.016:.01,dx=e.clientX-lx,dy=e.clientY-ly,now=performance.now(),ms=Math.max(8,now-ln);
+  lx=e.clientX;ly=e.clientY;ln=now;uy+=dx*k;up=cl(up+dy*k*.6,-.8,.8);vy=vy*.5+dx*k/ms*500;vp=vp*.5+dy*k*.6/ms*500});
+const end=()=>{dragging=false;cv.style.cursor='grab'};
+cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+/* símbolos: odontología, salud, inteligencia artificial, industrial, desarrollo personal */
+const G=[
+ c=>{c.moveTo(-.62,-.3);c.bezierCurveTo(-.62,-.78,-.2,-.8,0,-.55);c.bezierCurveTo(.2,-.8,.62,-.78,.62,-.3);c.bezierCurveTo(.62,.12,.4,.2,.36,.72);c.bezierCurveTo(.32,.95,.14,.95,.1,.68);c.bezierCurveTo(.07,.4,-.07,.4,-.1,.68);c.bezierCurveTo(-.14,.95,-.32,.95,-.36,.72);c.bezierCurveTo(-.4,.2,-.62,.12,-.62,-.3);c.closePath()},
+ c=>{c.moveTo(-.95,.05);c.lineTo(-.4,.05);c.lineTo(-.22,-.55);c.lineTo(.08,.65);c.lineTo(.26,-.15);c.lineTo(.4,.05);c.lineTo(.95,.05)},
+ c=>{const a=[[-.7,-.45],[-.7,.45]],b=[[0,-.62],[0,0],[0,.62]],o=[.7,0];
+  for(const p of a)for(const q of b){c.moveTo(p[0],p[1]);c.lineTo(q[0],q[1])}
+  for(const q of b){c.moveTo(q[0],q[1]);c.lineTo(o[0],o[1])}
+  for(const p of [...a,...b,o]){c.moveTo(p[0]+.13,p[1]);c.arc(p[0],p[1],.13,0,PI2)}},
+ c=>{const n=8,pr=[[0,.6],[.2,.92],[.5,.92],[.7,.6]];let f=true;
+  for(let i=0;i<n;i++)for(const[u,r]of pr){const a=(i+u)/n*PI2,x=r*Math.cos(a),y=r*Math.sin(a);f?c.moveTo(x,y):c.lineTo(x,y);f=false}
+  c.closePath();c.moveTo(.28,0);c.arc(0,0,.28,0,PI2)},
+ c=>{c.moveTo(-.85,.7);c.lineTo(-.85,.3);c.lineTo(-.4,.3);c.lineTo(-.4,-.1);c.lineTo(.05,-.1);c.lineTo(.05,-.5);c.lineTo(.5,-.5);c.lineTo(.5,.7);c.closePath();c.moveTo(.38,-.78);c.arc(.28,-.78,.1,0,PI2)}
+];
+const mk=()=>({x:rnd(-3.2,3.2),y:rnd(-2,FY),z:rnd(-2.2,2.2),v:rnd(.08,.22),s:rnd(.6,1.4)});
+const PT=Array.from({length:54},mk);
+const GL=Array.from({length:150},(_,i)=>{const y=1-2*(i+.5)/150,r=Math.sqrt(1-y*y),f=i*2.39996;return[r*Math.cos(f),y,r*Math.sin(f)]});
+function frame(t){
+  const dt=Math.min(.05,Math.max(0,t-last));last=t;curT=t;
+  if(!hinted&&t>.8){hinted=true;vy=2.4}
+  if(!dragging){uy+=vy*dt;up+=vp*dt;up-=up*Math.min(1,dt*.8)}
+  const fr=Math.pow(dragging?.02:.25,dt);vy*=fr;vp*=fr;
+  boost+=(cl(Math.abs(vy)/5,0,1)-boost)*Math.min(1,dt*6);ex1+=boost*dt*2.2;ex2+=boost*dt*.9;
+  sx+=(mx-sx)*.05;sy+=(my-sy)*.05;
+  const yaw=t*.12+uy+sx*.7,pit=cl(.4+up+sy*.2,-.15,1.2),c1=Math.cos(yaw),s1=Math.sin(yaw),c2=Math.cos(pit),s2=Math.sin(pit);
+  const S=Math.min(W*.2,H*.3),ox=W*.5,oy=H*.47,r0=Math.min(W,H)*.095;
+  const P=(x,y,z)=>{const x1=x*c1+z*s1,z1=-x*s1+z*c1,y2=y*c2-z1*s2,z2=y*s2+z1*c2,p=4.6/(4.6+Math.max(z2,-3.4));return{x:ox+x1*S*p,y:oy+y2*S*p,z:z2,p}};
+  const ln=(a,b,al,w)=>{ctx.strokeStyle=`rgba(${AC},${al})`;ctx.lineWidth=w||1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()};
+  const dp=z=>cl((1.4-z)/2.8,0,1);
+  const ring=(fn,n,al,w)=>{let a=null;for(let i=0;i<=n;i++){const b=P(...fn(i/n*PI2));if(a)ln(a,b,al*(.25+.75*dp(b.z)),w);a=b}};
+  ctx.clearRect(0,0,W,H);
+  let g=ctx.createRadialGradient(ox,oy,0,ox,oy,Math.min(W,H)*.48);g.addColorStop(0,`rgba(${AC},${.2+.28*boost})`);g.addColorStop(1,`rgba(${AC},0)`);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // suelo en perspectiva que avanza
+  const off=(t*.3)%.6;
+  for(let i=-6;i<=6;i++)for(let k=0;k<8;k++){
+    const z1=-3.6+k*.9,x=i*.6,f=1-Math.hypot(x,z1+.45)/3.8;if(f>0)ln(P(x,FY,z1),P(x,FY,z1+.9),.3*f);
+    const zz=i*.6+off,x1=-3.6+k*.9,f2=1-Math.hypot(x1+.45,zz)/3.8;if(f2>0&&Math.abs(zz)<3.6)ln(P(x1,FY,zz),P(x1+.9,FY,zz),.3*f2)}
+  for(let k=0;k<2;k++){const u=(t*.22+k*.5)%1;ctx.strokeStyle=`rgba(${AC},${.5*(1-u)})`;ctx.lineWidth=1.2;ctx.beginPath();
+    for(let i=0;i<=40;i++){const a=i/40*PI2,q=P(Math.cos(a)*u*3.2,FY,Math.sin(a)*u*3.2);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)}ctx.stroke()}
+  // red de conocimiento que asciende
+  const pp=PT.map(q=>{q.y-=q.v*dt;if(q.y<-2.1){q.y=FY;q.x=rnd(-3.2,3.2);q.z=rnd(-2.2,2.2)}return{q,p:P(q.x,q.y,q.z)}});
+  for(let i=0;i<pp.length;i++)for(let j=i+1;j<pp.length;j++){const a=pp[i].q,b=pp[j].q,d=Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z);if(d<1.2)ln(pp[i].p,pp[j].p,.22*(1-d/1.2)*(.3+dp(pp[i].p.z)))}
+  for(const{q,p}of pp){ctx.fillStyle=`rgba(${AC},${.25+.5*dp(p.z)})`;ctx.beginPath();ctx.arc(p.x,p.y,q.s*p.p*1.3,0,7);ctx.fill()}
+  // esfera holográfica con barrido de luz
+  const gs=t*.3+ex1,sc=Math.sin(t*.7+ex1*.8);
+  for(const y of[-.8,-.45,0,.45,.8]){const r=Math.sqrt(1-y*y);ring(a=>[r*Math.cos(a+gs),y,r*Math.sin(a+gs)],36,.4)}
+  for(let j=0;j<6;j++){const m=j*Math.PI/6+gs;ring(a=>[Math.cos(a)*Math.cos(m),Math.sin(a),Math.cos(a)*Math.sin(m)],40,.4)}
+  {const r=Math.sqrt(1-sc*sc);ring(a=>[r*Math.cos(a),sc,r*Math.sin(a)],40,.95,1.6)}
+  for(const[x,y,z]of GL){const xr=x*Math.cos(gs)+z*Math.sin(gs),zr=-x*Math.sin(gs)+z*Math.cos(gs),p=P(xr,y,zr),b=Math.exp(-Math.pow((y-sc)*5,2));
+    ctx.fillStyle=`rgba(${b>.3?'200,220,255':AC},${(.2+.8*b)*(.3+.7*dp(p.z))})`;ctx.beginPath();ctx.arc(p.x,p.y,(.9+1.8*b)*p.p,0,7);ctx.fill()}
+  // órbitas
+  const pos=a=>[R*Math.cos(a),.2*Math.sin(2*a+t),R*Math.sin(a)];
+  ring(pos,72,.28);
+  ring(b=>[R2*Math.cos(b),R2*Math.sin(b)*.5,R2*Math.sin(b)*.87],72,.16);
+  for(let j=0;j<3;j++){const d=j%2?-1:1,b0=t*.45*d+j*2.1;for(let s=0;s<16;s++){const b=b0-d*s*.045,q=P(R2*Math.cos(b),R2*Math.sin(b)*.5,R2*Math.sin(b)*.87);ctx.fillStyle=`rgba(${AC},${(1-s/16)*.7})`;ctx.beginPath();ctx.arc(q.x,q.y,(2.2-s*.1)*q.p,0,7);ctx.fill()}}
+  // sectores
+  const k=(t/2.4)%N,nodes=[],c0=P(0,0,0);
+  for(let i=0;i<N;i++){const a=t*.2+ex2+i/N*PI2,p=P(...pos(a));let q=Math.abs(k-i);q=Math.min(q,N-q);let e=Math.max(0,1-q*1.2);e=e*e*(3-2*e);nodes.push({i,a,e,...p})}
+  for(const n of nodes){ln(c0,n,.1+.5*n.e);
+    let pv=n;const TL=16+Math.round(boost*16);for(let s=1;s<=TL;s++){const q=P(...pos(n.a-s*.04));ln(pv,q,(1-s/TL)*(.15+.6*n.e+.3*boost),1.4);pv=q}
+    for(let j=0;j<(n.e>.2?2:1);j++){const u=(t*.45+n.i*.37+j*.5)%1;ctx.fillStyle=`rgba(${AC},${(.35+.65*n.e)*Math.sin(u*Math.PI)})`;ctx.beginPath();ctx.arc(c0.x+(n.x-c0.x)*u,c0.y+(n.y-c0.y)*u,1.6+n.e*1.4,0,7);ctx.fill()}}
+  const drawNode=n=>{const r=r0*(.7+.3*n.p);ctx.save();ctx.globalAlpha=.45+.55*dp(n.z);
+    if(n.e>0){const g=ctx.createRadialGradient(n.x,n.y,r*.6,n.x,n.y,r*2.3);g.addColorStop(0,`rgba(${AC},${.5*n.e})`);g.addColorStop(1,`rgba(${AC},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,r*2.3,0,7);ctx.fill()}
+    ctx.fillStyle='rgba(16,26,48,.96)';ctx.strokeStyle=`rgba(${n.e>.05?'160,190,255':'234,240,255'},${.22+.65*n.e})`;ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(n.x,n.y,r,0,PI2);ctx.fill();ctx.stroke();
+    const q=r*.54;ctx.translate(n.x,n.y);ctx.scale(q,q);ctx.lineWidth=1.5/q;ctx.lineJoin='round';ctx.lineCap='round';
+    ctx.strokeStyle=n.e>.05?`rgba(255,255,255,${.7+.3*n.e})`:`rgba(${AC},.9)`;ctx.beginPath();G[n.i](ctx);ctx.stroke();ctx.restore()};
+  const so=[...nodes].sort((a,b)=>b.z-a.z);
+  for(const n of so)if(n.z>0)drawNode(n);
+  const hp=S*.27*c0.p*(1+.03*Math.sin(t*2));ctx.save();ctx.translate(c0.x,c0.y);
+  const gl=ctx.createRadialGradient(0,0,hp*.5,0,0,hp*2.6);gl.addColorStop(0,`rgba(${AC},.4)`);gl.addColorStop(1,`rgba(${AC},0)`);ctx.fillStyle=gl;ctx.beginPath();ctx.arc(0,0,hp*2.6,0,7);ctx.fill();
+  ctx.scale(.88+.12*Math.cos(t*.9),1);
+  const bg=ctx.createLinearGradient(-hp,-hp,hp,hp);bg.addColorStop(0,'#1A47D6');bg.addColorStop(1,'#294EAA');ctx.fillStyle=bg;ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=1;
+  ctx.beginPath();if(ctx.roundRect)ctx.roundRect(-hp,-hp,hp*2,hp*2,hp*.36);else ctx.rect(-hp,-hp,hp*2,hp*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#fff';ctx.font=`800 ${hp*.85}px 'Plus Jakarta Sans',-apple-system,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('4D',0,hp*.04);ctx.restore();
+  for(const n of so)if(n.z<=0)drawNode(n);
+  for(let i=rip.length-1;i>=0;i--){const u=(t-rip[i].t)/.9;if(u>1){rip.splice(i,1);continue}for(let j=0;j<2;j++){const v=cl(u-j*.18,0,1);ctx.strokeStyle=`rgba(190,210,255,${.7*(1-v)})`;ctx.lineWidth=1.8-v;ctx.beginPath();ctx.arc(rip[i].x,rip[i].y,6+v*(j?44:80),0,PI2);ctx.stroke()}}
+}
+if(reduce){frame(3)}else{const t0=performance.now();(function loop(n){requestAnimationFrame(loop);try{frame(Math.max(0,(n-t0)/1000))}catch(e){console.error(e)}})(t0)}
+})();
+</script>
+
+<div class="request-overlay" id="requestAccessModal" aria-hidden="true">
+  <section class="request-card" role="dialog" aria-modal="true" aria-labelledby="requestTitle">
+    <h3 id="requestTitle">Solicitar acceso</h3>
+    <p>Completa tus datos para que el equipo de 4D CAD CAM pueda comunicarse contigo.</p>
+    <form id="requestAccessForm">
+      <div class="request-field">
+        <label for="requestName">Nombre completo</label>
+        <input id="requestName" name="nombre" type="text" autocomplete="name" required maxlength="120">
+      </div>
+      <div class="request-field">
+        <label for="requestEmail">Correo electrónico</label>
+        <input id="requestEmail" name="correo" type="email" autocomplete="email" required maxlength="160">
+      </div>
+      <div class="request-field">
+        <label for="requestPhone">WhatsApp</label>
+        <input id="requestPhone" name="whatsapp" type="tel" autocomplete="tel" required maxlength="40">
+      </div>
+      <div class="request-field">
+        <label for="requestCourse">Curso o programa de interés</label>
+        <input id="requestCourse" name="curso" type="text" value="Aula virtual 4D CAD CAM" required maxlength="120">
+      </div>
+      <div class="request-field">
+        <label for="requestDetail">Mensaje (opcional)</label>
+        <textarea id="requestDetail" name="mensaje" maxlength="500" placeholder="Cuéntanos brevemente qué acceso necesitas."></textarea>
+      </div>
+      <div class="request-actions">
+        <button type="button" class="request-cancel" id="closeRequestAccess">Cancelar</button>
+        <button type="submit" class="request-submit" id="sendRequestAccess">Enviar solicitud</button>
+      </div>
+      <p class="request-message" id="requestMessage" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</div>
 
 <script src="js/qi.js"></script>
-
-   <!-- FIX 2: padding responsive del wrapper del modal frikiestructura -->
-   <div id="modal-frikiestructura" 
-        class="fixed inset-0 bg-black/40 backdrop-blur-md z-[600] overflow-y-auto opacity-0 pointer-events-none transition-all duration-300"
-        onclick="closeModalCursos(event)">
-        
-        <div class="w-full max-w-5xl mx-auto min-h-screen p-4 sm:p-6 md:p-12 flex items-center justify-center">
-            
-            <!-- FIX 2: m-auto permite que el contenido se alinee arriba cuando excede la pantalla -->
-            <div id="modalContent"
-            class="w-full bg-white/80 backdrop-blur-2xl rounded-[40px] p-6 md:p-10 m-auto shadow-[0_30px_100px_rgba(0,0,0,0.3)] border border-white/50 transform scale-95 opacity-0 transition-all duration-500"
-            onclick="event.stopPropagation()">
-            
-            <div class="flex justify-between items-center mb-10 border-b border-gray-200/50 pb-6">
-                <h2 class="text-xl md:text-2xl font-black tracking-tighter uppercase italic">
-                🚀 <span class="text-gray-900">Innovaciones</span>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">4D CAD CAM</span>
-                </h2>
-                <button onclick="closeModalCursos()" class="w-12 h-12 flex items-center justify-center rounded-full bg-black/5 hover:bg-red-50 hover:text-red-500 transition-all duration-300">
-                <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-
-            <div class="rounded-[32px] bg-gradient-to-br from-gray-50 to-white p-6 md:p-10 mb-8 border border-gray-100 shadow-sm">
-                <div class="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-6">
-                
-                <div>
-                    <span class="bg-black text-yellow-400 text-[10px] px-4 py-1.5 rounded-full font-black tracking-widest shadow-md">
-                    SISTEMA PREMIUM ☢️
-                    </span>
-                    <h3 class="mt-4 text-3xl md:text-4xl font-black text-gray-900 tracking-tighter">
-                    FRIKIESTRUCTURA
-                    </h3>
-                    <p class="text-sm text-gray-500 mt-3 max-w-xl font-medium leading-relaxed">
-                    Optimización avanzada de mallas y flujos híbridos. El estándar de ingeniería para diseños dentales de alta complejidad.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-inner text-center min-w-[160px]">
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Inversión Única</p>
-                    <p class="text-4xl font-black text-gray-900 tracking-tighter">$149</p>
-                </div>
-
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-10">
-
-                <div class="relative bg-[#0b1220] rounded-[32px] aspect-square flex items-center justify-center overflow-hidden shadow-2xl border-4 border-slate-900">
-                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent"></div>
-                
-                <span class="absolute top-6 left-6 text-[9px] bg-yellow-400 text-black px-4 py-1.5 rounded-full font-black uppercase tracking-widest shadow-lg">
-                    PREVIEW 3D INTERACTIVA
-                </span>
-
-                <i class="fas fa-cube text-7xl text-yellow-400/10 animate-spin-slow"></i>
-
-                <p class="absolute bottom-6 text-[9px] text-gray-500 font-bold uppercase tracking-[0.3em]">
-                    Renderizado de ingeniería 4D
-                </p>
-                </div>
-
-                <div class="flex flex-col justify-between py-2">
-                
-                <div>
-                    <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight">Acceso inteligente</h3>
-                    <p class="text-sm text-gray-600 mt-3 font-medium">
-                    Ingresa tu ID autorizado para desbloquear el video interactivo y las librerías automáticamente.
-                    </p>
-                </div>
-
-                <div class="mt-8">
-                    <label class="text-[10px] font-black text-purple-600 uppercase tracking-[0.2em] ml-1">
-                    ID DE LICENCIA AUTORIZADO
-                    </label>
-
-                    <div class="mt-3 flex items-center bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-purple-400 focus-within:bg-white transition-all duration-300">
-                    
-                    <input id="inputID"
-                        type="text"
-                        placeholder="4D-XXXXXXX"
-                        oninput="validarID(this)"
-                        class="flex-1 px-6 py-5 text-sm font-black outline-none bg-transparent uppercase placeholder-gray-300">
-
-                    <button id="btnValidar"
-                        class="h-full px-8 text-white bg-gray-300 cursor-not-allowed transition-all duration-300">
-                        <i class="fas fa-lock text-lg"></i>
-                    </button>
-
-                    </div>
-
-                    <div id="estadoIDContainer" class="flex items-center gap-2 mt-3 ml-1 opacity-60">
-                        <div id="puntoEstado" class="w-2 h-2 rounded-full bg-gray-300 transition-colors"></div>
-                        <p id="estadoID" class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                        Esperando validación de sistema...
-                        </p>
-                    </div>
-                </div>
-
-                <button onclick="generarTicketCurso('Frikiestructura', 149)"
-                    class="w-full mt-10 py-5 rounded-2xl bg-black text-white font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(0,0,0,0.2)] hover:bg-purple-600 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3">
-                    <i class="fas fa-unlock-alt"></i> ADQUIRIR ACCESO E ID DE DESCARGA
-                </button>
-
-                </div>
-
-            </div>
-
-            <button onclick="closeModalCursos()"
-                class="w-full mt-12 py-4 bg-gray-50 text-gray-400 font-black text-[9px] uppercase tracking-[0.3em] rounded-2xl hover:bg-red-50 hover:text-red-500 transition-all duration-300">
-                Regresar al Catálogo
-            </button>
-
-            </div>
-
-        </div>
-        </div>
-
-        <script>
-        function openModalCursos() {
-        const modal = document.getElementById("modal-frikiestructura");
-        const content = document.getElementById("modalContent");
-
-        modal.classList.remove("opacity-0", "pointer-events-none");
-        modal.classList.add("opacity-100");
-        
-        setTimeout(() => {
-            content.classList.remove("scale-95", "opacity-0");
-            content.classList.add("scale-100", "opacity-100");
-        }, 10);
-        
-        document.body.style.overflow = 'hidden';
-        }
-
-        function closeModalCursos(e) {
-        const modal = document.getElementById("modal-frikiestructura");
-        const content = document.getElementById("modalContent");
-
-        content.classList.remove("scale-100", "opacity-100");
-        content.classList.add("scale-95", "opacity-0");
-
-        setTimeout(() => {
-            modal.classList.remove("opacity-100");
-            modal.classList.add("opacity-0", "pointer-events-none");
-            document.body.style.overflow = 'auto';
-        }, 300);
-        }
-
-        function validarID(input) {
-        const btn = document.getElementById("btnValidar");
-        const estado = document.getElementById("estadoID");
-        const punto = document.getElementById("puntoEstado");
-        const container = document.getElementById("estadoIDContainer");
-
-        if (input.value.toUpperCase().startsWith("4D-") && input.value.length > 8) {
-            btn.classList.remove("bg-gray-300", "cursor-not-allowed");
-            btn.classList.add("bg-purple-600", "hover:bg-black", "animate-pulse");
-            btn.innerHTML = '<i class="fas fa-unlock"></i>';
-            
-            estado.innerText = "ID detectado: Listo para descargar";
-            estado.classList.remove("text-gray-400");
-            estado.classList.add("text-green-600");
-            
-            punto.classList.remove("bg-gray-300");
-            punto.classList.add("bg-green-500", "animate-ping");
-            container.classList.remove("opacity-60");
-        } else {
-            btn.classList.add("bg-gray-300", "cursor-not-allowed");
-            btn.classList.remove("bg-purple-600", "hover:bg-black", "animate-pulse");
-            btn.innerHTML = '<i class="fas fa-lock"></i>';
-            
-            estado.innerText = "Esperando validación de sistema...";
-            estado.classList.remove("text-green-600");
-            estado.classList.add("text-gray-400");
-            
-            punto.classList.add("bg-gray-300");
-            punto.classList.remove("bg-green-500", "animate-ping");
-            container.classList.add("opacity-60");
-        }
-        }
-        </script>
+<script src="js/integracion.js"></script>
 </body>
 </html>
